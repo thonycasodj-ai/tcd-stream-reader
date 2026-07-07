@@ -57,20 +57,20 @@ app.post('/api/connect', async (req, res) => {
     connection.on('chat', (data) => {
       broadcast({
         type: 'chat',
-        user: data.user?.nickname || data.user?.uniqueId || 'Spettatore',
-        text: data.comment
+        user: data.user?.nickname || 'Spettatore',
+        text: data.content
       });
     });
 
     connection.on('gift', (data) => {
-      const giftType = data.giftDetails?.giftType;
+      const giftType = data.gift?.type;
       // Per i regali "a raffica" (giftType 1) aspetta la fine dello streak
       if (giftType === 1 && !data.repeatEnd) return;
 
-      const giftName = data.giftDetails?.giftName || 'un regalo';
+      const giftName = data.gift?.name || 'un regalo';
       broadcast({
         type: 'gift',
-        user: data.user?.nickname || data.user?.uniqueId || 'Spettatore',
+        user: data.user?.nickname || 'Spettatore',
         giftName,
         repeatCount: data.repeatCount || 1
       });
