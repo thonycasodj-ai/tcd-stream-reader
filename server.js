@@ -2,11 +2,15 @@
 // Si collega alla chat live di TikTok e inoltra i commenti in tempo reale
 // al browser (via WebSocket), dove vengono letti ad alta voce.
 
-const express = require('express');
-const http = require('http');
-const path = require('path');
-const { WebSocketServer } = require('ws');
-const { WebcastPushConnection } = require('tiktok-live-connector');
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { WebSocketServer } from 'ws';
+import { TikTokLiveConnection } from 'tiktok-live-connector';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
@@ -35,11 +39,11 @@ app.post('/api/connect', async (req, res) => {
 
   // Chiude una connessione precedente se presente
   if (activeConnection) {
-    try { activeConnection.disconnect(); } catch (e) {}
+    try { await activeConnection.disconnect(); } catch (e) {}
     activeConnection = null;
   }
 
-  const connection = new WebcastPushConnection(username);
+  const connection = new TikTokLiveConnection(username);
 
   try {
     await connection.connect();
@@ -51,22 +55,27 @@ app.post('/api/connect', async (req, res) => {
     connection.on('chat', (data) => {
       broadcast({
         type: 'chat',
-        user: data.nickname || data.uniqueId || 'Spettatore',
+        user: data.user?.nickname || data.user?.uniqueId || 'Spettatore',
         text: data.comment
       });
     });
 
     connection.on('gift', (data) => {
+      const giftType = data.giftDetails?.giftType;
+      // Per i regali "a raffica" (giftType 1) aspetta la fine dello streak
+      if (giftType === 1 && !data.repeatEnd) return;
+
+      const giftName = data.giftDetails?.giftName || 'un regalo';
       broadcast({
         type: 'gift',
-        user: data.nickname || data.uniqueId || 'Spettatore',
-        giftName: data.giftName,
-        repeatCount: data.repeatCount
+        user: data.user?.nickname || data.user?.uniqueId || 'Spettatore',
+        giftName,
+        repeatCount: data.repeatCount || 1
       });
     });
 
     connection.on('disconnected', () => {
-      broadcast({ type: 'status', status: 'disconnected', username });
+      broadcast({ type: 'status', status: 'disconnected', username: activeUsername });
       activeConnection = null;
     });
 
@@ -77,9 +86,9 @@ app.post('/api/connect', async (req, res) => {
 });
 
 // Endpoint: interrompe il collegamento
-app.post('/api/disconnect', (req, res) => {
+app.post('/api/disconnect', async (req, res) => {
   if (activeConnection) {
-    try { activeConnection.disconnect(); } catch (e) {}
+    try { await activeConnection.disconnect(); } catch (e) {}
     activeConnection = null;
     broadcast({ type: 'status', status: 'disconnected', username: activeUsername });
   }
