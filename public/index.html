@@ -331,7 +331,16 @@
     return 'it-IT';
   }
 
-  function processSpeechQueue(){
+  function speakWithBrowser(text, onDone){
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = detectLanguage(text);
+    utter.rate = 1.05;
+    utter.onend = onDone;
+    utter.onerror = onDone;
+    speechSynthesis.speak(utter);
+  }
+
+  async function processSpeechQueue(){
     if(speaking || speechQueue.length === 0) return;
     speaking = true;
     const text = speechQueue.shift();
@@ -341,11 +350,7 @@
     readingText.classList.remove('idle');
     document.getElementById('avatarOrb').classList.add('speaking');
 
-    const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = detectLanguage(text);
-    utter.rate = 1.05;
-
-    utter.onend = () => {
+    const finish = () => {
       speaking = false;
       document.getElementById('avatarOrb').classList.remove('speaking');
       if(speechQueue.length === 0){
@@ -355,7 +360,24 @@
       processSpeechQueue();
     };
 
-    speechSynthesis.speak(utter);
+    try {
+      const res = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text })
+      });
+      if(!res.ok) throw new Error('tts non disponibile');
+
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.onended = () => { URL.revokeObjectURL(url); finish(); };
+      audio.onerror = () => { URL.revokeObjectURL(url); speakWithBrowser(text, finish); };
+      audio.play();
+    } catch(e){
+      // Voce di riserva (browser) se ElevenLabs non risponde
+      speakWithBrowser(text, finish);
+    }
   }
 
   connectWebSocket();
