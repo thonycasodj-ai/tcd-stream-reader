@@ -226,6 +226,21 @@
     ).join('');
   }
 
+  // Riconosce la lingua guardando i caratteri usati nel messaggio,
+  // così la voce legge con la pronuncia giusta invece che sempre in italiano.
+  function detectLanguage(text){
+    if(/[\u3040-\u30ff\u31f0-\u31ff]/.test(text)) return 'ja-JP';       // Giapponese (hiragana/katakana)
+    if(/[\uac00-\ud7af]/.test(text)) return 'ko-KR';                    // Coreano
+    if(/[\u4e00-\u9fff]/.test(text)) return 'zh-CN';                    // Cinese (kanji/hanzi senza kana)
+    if(/[\u0600-\u06ff]/.test(text)) return 'ar-SA';                    // Arabo
+    if(/[\u0400-\u04ff]/.test(text)) return 'ru-RU';                    // Russo/cirillico
+    if(/[\u0e00-\u0e7f]/.test(text)) return 'th-TH';                    // Thai
+    if(/[àèéìòùçñ]/i.test(text) && /\b(el|la|los|las|que|para|muy)\b/i.test(text)) return 'es-ES'; // Spagnolo
+    if(/\b(le|la|les|est|pas|avec|pour|bonjour)\b/i.test(text)) return 'fr-FR'; // Francese
+    if(/\b(the|you|is|are|and|thanks|love)\b/i.test(text)) return 'en-US'; // Inglese
+    return 'it-IT'; // Default italiano
+  }
+
   function processSpeechQueue(){
     if(speaking || speechQueue.length === 0) return;
     speaking = true;
@@ -237,7 +252,7 @@
     document.getElementById('avatarPulse').classList.add('speaking');
 
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = 'it-IT';
+    utter.lang = detectLanguage(text);
     utter.rate = 1.05;
 
     utter.onend = () => {
