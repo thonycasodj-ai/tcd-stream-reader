@@ -133,6 +133,7 @@ app.post('/api/tts', async (req, res) => {
 
     if (!response.ok) {
       const errText = await response.text();
+      console.error('Errore ElevenLabs:', response.status, errText);
       return res.status(502).json({ error: 'Errore ElevenLabs: ' + errText });
     }
 
