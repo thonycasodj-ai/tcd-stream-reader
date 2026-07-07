@@ -101,6 +101,49 @@ app.get('/api/status', (req, res) => {
   res.json({ connected: !!activeConnection, username: activeUsername });
 });
 
+// Endpoint: sintesi vocale di alta qualità tramite ElevenLabs
+// POST /api/tts  body: { text: "testo da leggere" }
+app.post('/api/tts', async (req, res) => {
+  const { text } = req.body;
+  if (!text) return res.status(400).json({ error: 'Testo mancante' });
+
+  const apiKey = process.env.ELEVENLABS_API_KEY;
+  if (!apiKey) {
+    return res.status(503).json({ error: 'ElevenLabs non configurato, uso voce di riserva' });
+  }
+
+  // Voce predefinita multilingua ("Rachel"). Si può sostituire con un'altra
+  // voice_id di ElevenLabs impostando la variabile ELEVENLABS_VOICE_ID.
+  const voiceId = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
+
+  try {
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': apiKey,
+        'Content-Type': 'application/json',
+        'Accept': 'audio/mpeg'
+      },
+      body: JSON.stringify({
+        text,
+        model_id: 'eleven_multilingual_v2',
+        voice_settings: { stability: 0.4, similarity_boost: 0.75 }
+      })
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return res.status(502).json({ error: 'Errore ElevenLabs: ' + errText });
+    }
+
+    const arrayBuffer = await response.arrayBuffer();
+    res.set('Content-Type', 'audio/mpeg');
+    res.send(Buffer.from(arrayBuffer));
+  } catch (err) {
+    res.status(500).json({ error: 'Errore chiamata ElevenLabs: ' + err.message });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
   console.log(`TCD Stream Reader in ascolto sulla porta ${PORT}`);
