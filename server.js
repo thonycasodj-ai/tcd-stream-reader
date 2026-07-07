@@ -43,7 +43,9 @@ app.post('/api/connect', async (req, res) => {
     activeConnection = null;
   }
 
-  const connection = new TikTokLiveConnection(username);
+  const connection = new TikTokLiveConnection(username, {
+    signApiKey: process.env.EULER_API_KEY || undefined
+  });
 
   try {
     await connection.connect();
