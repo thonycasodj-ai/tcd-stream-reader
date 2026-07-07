@@ -9,133 +9,224 @@
 
   :root{
     --navy-deep: #050714;
+    --navy: #0a0e27;
     --purple: #7b2ff7;
     --gold: #f5b942;
     --gold-soft: #ffd97a;
+    --coral: #ff5f7e;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
+
   body{
     background: var(--navy-deep);
     font-family: 'Space Grotesk', sans-serif;
     color: #fff;
     min-height: 100vh;
-    padding: 20px;
+    overflow-x: hidden;
+    position: relative;
   }
-  .wrap{ max-width: 560px; margin: 0 auto; }
-  .brand{
+
+  .bg-glow{
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(123,47,247,0.25), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(245,185,66,0.18), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(255,95,126,0.12), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .bg-grid{
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 34px 34px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap{ max-width: 600px; margin: 0 auto; padding: 22px 18px 40px; position: relative; z-index: 1; }
+
+  .hero{ text-align: center; padding: 18px 0 24px; }
+  .hero-badge{
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 10.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 14px;
+  }
+  .live-dot{ width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .live-dot.on{ background: var(--coral); box-shadow: 0 0 8px var(--coral); animation: blink 1.1s infinite; }
+  @keyframes blink{ 50%{ opacity: 0.35; } }
+
+  .hero h1{
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 26px;
-    letter-spacing: 2px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 4px;
+    font-size: 42px;
+    letter-spacing: 3px;
+    line-height: 1;
+    background: linear-gradient(135deg, #fff 30%, var(--gold-soft) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
-  .brand .dot{ width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
-  .dot.live{ background: #ff4d4d; box-shadow: 0 0 10px #ff4d4d; animation: blink 1.2s infinite; }
-  @keyframes blink{ 50%{ opacity: 0.3; } }
-  .sub{ font-size: 12px; color: rgba(255,255,255,0.5); letter-spacing: 1px; margin-bottom: 20px; text-transform: uppercase; }
+  .hero p{ font-size: 12.5px; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-top: 6px; }
 
-  .panel{
-    background: linear-gradient(160deg, rgba(123,47,247,0.12), rgba(245,185,66,0.05));
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 18px;
-    padding: 20px;
-    margin-bottom: 16px;
-  }
-
-  .status-row{ display:flex; align-items:center; gap:8px; font-size:12px; color: rgba(255,255,255,0.6); margin-bottom: 12px; }
-
-  .now-reading{
-    min-height: 90px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  .stage-card{
+    position: relative;
+    border-radius: 26px;
+    padding: 32px 20px 26px;
+    margin-bottom: 18px;
+    background: linear-gradient(165deg, rgba(123,47,247,0.16), rgba(5,7,20,0.4) 60%);
+    border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
     text-align: center;
-    gap: 10px;
   }
-  .avatar-pulse{
-    width: 54px; height: 54px;
+  .stage-card::before{
+    content:'';
+    position: absolute;
+    top: -50%; left: 50%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,185,66,0.18), transparent 65%);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .avatar-orb{
+    position: relative;
+    width: 96px; height: 96px;
+    margin: 0 auto 18px;
     border-radius: 50%;
-    background: radial-gradient(circle, var(--gold-soft), var(--purple));
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--purple) 75%);
     display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
+    font-size: 38px;
+    box-shadow: 0 0 0 0 rgba(245,185,66,0.5);
   }
-  .avatar-pulse.speaking{ animation: pulseRing 1s ease-out infinite; }
-  @keyframes pulseRing{
-    0%{ box-shadow: 0 0 0 0 rgba(245,185,66,0.55); }
-    70%{ box-shadow: 0 0 0 18px rgba(245,185,66,0); }
+  .avatar-orb.speaking{ animation: orbPulse 0.9s ease-out infinite; }
+  @keyframes orbPulse{
+    0%{ box-shadow: 0 0 0 0 rgba(245,185,66,0.5); }
+    70%{ box-shadow: 0 0 0 22px rgba(245,185,66,0); }
     100%{ box-shadow: 0 0 0 0 rgba(245,185,66,0); }
   }
-  .reading-text{ font-size: 15px; min-height: 22px; }
-  .reading-user{ font-size: 11px; color: var(--gold-soft); letter-spacing: 1px; text-transform: uppercase; }
-  .idle-text{ color: rgba(255,255,255,0.35); font-size: 13px; }
+  .avatar-ring{ position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(245,185,66,0.3); }
 
-  label{ display:block; font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 6px; }
+  .reading-user{
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--gold-soft); min-height: 16px; margin-bottom: 4px;
+  }
+  .reading-text{ font-size: 17px; font-weight: 500; min-height: 26px; line-height: 1.4; padding: 0 6px; }
+  .reading-text.idle{ color: rgba(255,255,255,0.3); font-size: 13.5px; font-weight: 400; }
+
+  .panel{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  label{
+    display:block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 7px;
+  }
+  .input-row{ display: flex; gap: 10px; }
   input[type=text]{
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 10px;
-    padding: 11px 12px;
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 13px 14px;
     color: #fff;
     font-family: inherit;
-    font-size: 14px;
-    margin-bottom: 12px;
+    font-size: 14.5px;
   }
-  input::placeholder{ color: rgba(255,255,255,0.35); }
+  input::placeholder{ color: rgba(255,255,255,0.3); }
 
   .btn{
-    width: 100%;
+    border: none; border-radius: 12px; padding: 13px 22px;
+    font-family: inherit; font-weight: 700; font-size: 12.5px;
+    letter-spacing: 0.8px; text-transform: uppercase; cursor: pointer;
+    white-space: nowrap; transition: transform 0.12s ease;
     background: linear-gradient(135deg, var(--gold), var(--gold-soft));
-    color: #1a1a2e;
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.5px;
-    cursor: pointer;
-    text-transform: uppercase;
+    color: #1a1226;
   }
-  .btn.stop{ background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+  .btn:active{ transform: scale(0.96); }
+  .btn.on{ background: linear-gradient(135deg, var(--coral), #ff8fa3); color: #2a0d16; }
 
-  .queue-label{ font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 8px; }
-  .queue-list{ display: flex; flex-direction: column; gap: 6px; max-height: 160px; overflow-y: auto; }
-  .queue-item{ background: rgba(255,255,255,0.05); border-left: 2px solid var(--purple); padding: 8px 10px; border-radius: 6px; font-size: 12.5px; color: rgba(255,255,255,0.75); }
-  .queue-item b{ color: var(--gold-soft); }
-  .queue-item.gift{ border-left-color: var(--gold); }
-  .empty-queue{ font-size: 12px; color: rgba(255,255,255,0.3); padding: 6px 2px; }
+  .feed-label{
+    font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 10px; display: flex; justify-content: space-between;
+  }
+  .feed{ display: flex; flex-direction: column; gap: 8px; max-height: 220px; overflow-y: auto; }
+  .feed::-webkit-scrollbar{ width: 4px; }
+  .feed::-webkit-scrollbar-thumb{ background: rgba(255,255,255,0.15); border-radius: 4px; }
 
-  .footnote{ font-size: 10.5px; color: rgba(255,255,255,0.35); text-align: center; margin-top: 6px; line-height: 1.5; }
+  .bubble{
+    background: rgba(255,255,255,0.05);
+    border-radius: 14px;
+    padding: 10px 13px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    border-left: 3px solid var(--purple);
+    animation: bubbleIn 0.3s ease;
+  }
+  .bubble b{ color: var(--gold-soft); }
+  .bubble.gift{
+    border-left-color: var(--gold);
+    background: linear-gradient(90deg, rgba(245,185,66,0.1), rgba(255,255,255,0.04));
+  }
+  @keyframes bubbleIn{ from{ opacity: 0; transform: translateY(6px); } to{ opacity: 1; transform: translateY(0); } }
+  .empty-feed{ font-size: 12px; color: rgba(255,255,255,0.25); padding: 4px 2px; }
+
+  .footnote{ text-align: center; font-size: 10.5px; color: rgba(255,255,255,0.3); margin-top: 18px; line-height: 1.6; }
+
+  .brand-tag{
+    position: fixed; bottom: 14px; right: 16px;
+    font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 2px;
+    color: rgba(255,255,255,0.2); z-index: 1;
+  }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="brand"><span class="dot" id="liveDot"></span>TCD STREAM READER</div>
-  <div class="sub">Collegato alla tua chat live TikTok</div>
+<div class="bg-glow"></div>
+<div class="bg-grid"></div>
 
-  <div class="panel">
-    <div class="status-row" id="statusRow">Non collegato</div>
-    <label>Username TikTok (senza @)</label>
-    <input type="text" id="usernameInput" placeholder="es. thonycasodj">
-    <button class="btn" id="connectBtn" onclick="toggleConnect()">Collega alla live</button>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-badge"><span class="live-dot" id="liveDot"></span><span id="statusText">Non collegato</span></div>
+    <h1>STREAM READER</h1>
+    <p>La tua chat live, letta ad alta voce</p>
+  </div>
+
+  <div class="stage-card">
+    <div class="avatar-orb" id="avatarOrb">
+      <div class="avatar-ring"></div>
+      🎙️
+    </div>
+    <div class="reading-user" id="readingUser"></div>
+    <div class="reading-text idle" id="readingText">In attesa di commenti...</div>
   </div>
 
   <div class="panel">
-    <div class="now-reading">
-      <div class="avatar-pulse" id="avatarPulse">🎙️</div>
-      <div class="reading-user" id="readingUser"></div>
-      <div class="reading-text idle-text" id="readingText">In attesa di commenti...</div>
+    <label>Username TikTok (senza @)</label>
+    <div class="input-row">
+      <input type="text" id="usernameInput" placeholder="es. thonycasodj">
+      <button class="btn" id="connectBtn" onclick="toggleConnect()">Collega</button>
     </div>
   </div>
 
   <div class="panel">
-    <div class="queue-label">Ultimi eventi</div>
-    <div class="queue-list" id="queueList">
-      <div class="empty-queue">Nessun evento ancora</div>
+    <div class="feed-label"><span>Ultimi eventi</span><span id="eventCount"></span></div>
+    <div class="feed" id="feed">
+      <div class="empty-feed">Nessun evento ancora</div>
     </div>
   </div>
 
@@ -144,6 +235,8 @@
     Deve restare aperta per continuare a leggere i commenti.
   </div>
 </div>
+
+<div class="brand-tag">TCD</div>
 
 <script>
   let ws = null;
@@ -163,16 +256,14 @@
         connected = data.status === 'connected';
         updateStatus(data);
       }
-
       if(data.type === 'chat'){
-        addHistory(data.user, data.text, false);
+        addToFeed(data.user, data.text, false);
         speechQueue.push(`${data.user} dice: ${data.text}`);
         processSpeechQueue();
       }
-
       if(data.type === 'gift'){
         const label = `${data.giftName} x${data.repeatCount}`;
-        addHistory(data.user, label, true);
+        addToFeed(data.user, label, true);
         speechQueue.push(`${data.user} ha inviato ${data.giftName}`);
         processSpeechQueue();
       }
@@ -180,17 +271,19 @@
   }
 
   function updateStatus(data){
-    const row = document.getElementById('statusRow');
     const dot = document.getElementById('liveDot');
+    const statusText = document.getElementById('statusText');
     const btn = document.getElementById('connectBtn');
     if(data.status === 'connected'){
-      row.textContent = `Collegato a @${data.username}`;
-      dot.classList.add('live');
+      statusText.textContent = `Collegato a @${data.username}`;
+      dot.classList.add('on');
       btn.textContent = 'Disconnetti';
+      btn.classList.add('on');
     } else {
-      row.textContent = 'Non collegato';
-      dot.classList.remove('live');
-      btn.textContent = 'Collega alla live';
+      statusText.textContent = 'Non collegato';
+      dot.classList.remove('on');
+      btn.textContent = 'Collega';
+      btn.classList.remove('on');
     }
   }
 
@@ -208,37 +301,34 @@
       body: JSON.stringify({ username })
     });
     const data = await res.json();
-    if(!res.ok){
-      alert(data.error || 'Errore di connessione');
-    }
+    if(!res.ok) alert(data.error || 'Errore di connessione');
   }
 
-  function addHistory(user, text, isGift){
+  function addToFeed(user, text, isGift){
     history.unshift({ user, text, isGift });
-    history = history.slice(0, 20);
-    const list = document.getElementById('queueList');
+    history = history.slice(0, 25);
+    const feed = document.getElementById('feed');
+    document.getElementById('eventCount').textContent = history.length ? `${history.length}` : '';
     if(history.length === 0){
-      list.innerHTML = '<div class="empty-queue">Nessun evento ancora</div>';
+      feed.innerHTML = '<div class="empty-feed">Nessun evento ancora</div>';
       return;
     }
-    list.innerHTML = history.map(item =>
-      `<div class="queue-item ${item.isGift ? 'gift' : ''}"><b>${item.user}${item.isGift ? ' 🎁' : ''}:</b> ${item.text}</div>`
+    feed.innerHTML = history.map(item =>
+      `<div class="bubble ${item.isGift ? 'gift' : ''}"><b>${item.user}${item.isGift ? ' 🎁' : ''}</b> ${item.text}</div>`
     ).join('');
   }
 
-  // Riconosce la lingua guardando i caratteri usati nel messaggio,
-  // così la voce legge con la pronuncia giusta invece che sempre in italiano.
   function detectLanguage(text){
-    if(/[\u3040-\u30ff\u31f0-\u31ff]/.test(text)) return 'ja-JP';       // Giapponese (hiragana/katakana)
-    if(/[\uac00-\ud7af]/.test(text)) return 'ko-KR';                    // Coreano
-    if(/[\u4e00-\u9fff]/.test(text)) return 'zh-CN';                    // Cinese (kanji/hanzi senza kana)
-    if(/[\u0600-\u06ff]/.test(text)) return 'ar-SA';                    // Arabo
-    if(/[\u0400-\u04ff]/.test(text)) return 'ru-RU';                    // Russo/cirillico
-    if(/[\u0e00-\u0e7f]/.test(text)) return 'th-TH';                    // Thai
-    if(/[àèéìòùçñ]/i.test(text) && /\b(el|la|los|las|que|para|muy)\b/i.test(text)) return 'es-ES'; // Spagnolo
-    if(/\b(le|la|les|est|pas|avec|pour|bonjour)\b/i.test(text)) return 'fr-FR'; // Francese
-    if(/\b(the|you|is|are|and|thanks|love)\b/i.test(text)) return 'en-US'; // Inglese
-    return 'it-IT'; // Default italiano
+    if(/[\u3040-\u30ff\u31f0-\u31ff]/.test(text)) return 'ja-JP';
+    if(/[\uac00-\ud7af]/.test(text)) return 'ko-KR';
+    if(/[\u4e00-\u9fff]/.test(text)) return 'zh-CN';
+    if(/[\u0600-\u06ff]/.test(text)) return 'ar-SA';
+    if(/[\u0400-\u04ff]/.test(text)) return 'ru-RU';
+    if(/[\u0e00-\u0e7f]/.test(text)) return 'th-TH';
+    if(/[àèéìòùçñ]/i.test(text) && /\b(el|la|los|las|que|para|muy)\b/i.test(text)) return 'es-ES';
+    if(/\b(le|la|les|est|pas|avec|pour|bonjour)\b/i.test(text)) return 'fr-FR';
+    if(/\b(the|you|is|are|and|thanks|love)\b/i.test(text)) return 'en-US';
+    return 'it-IT';
   }
 
   function processSpeechQueue(){
@@ -248,8 +338,8 @@
 
     const readingText = document.getElementById('readingText');
     readingText.textContent = text;
-    readingText.classList.remove('idle-text');
-    document.getElementById('avatarPulse').classList.add('speaking');
+    readingText.classList.remove('idle');
+    document.getElementById('avatarOrb').classList.add('speaking');
 
     const utter = new SpeechSynthesisUtterance(text);
     utter.lang = detectLanguage(text);
@@ -257,10 +347,10 @@
 
     utter.onend = () => {
       speaking = false;
-      document.getElementById('avatarPulse').classList.remove('speaking');
+      document.getElementById('avatarOrb').classList.remove('speaking');
       if(speechQueue.length === 0){
         readingText.textContent = 'In attesa di commenti...';
-        readingText.classList.add('idle-text');
+        readingText.classList.add('idle');
       }
       processSpeechQueue();
     };
