@@ -76,6 +76,13 @@ app.post('/api/connect', async (req, res) => {
       });
     });
 
+    connection.on('member', (data) => {
+      broadcast({
+        type: 'join',
+        user: data.user?.nickname || 'Qualcuno'
+      });
+    });
+
     connection.on('disconnected', () => {
       broadcast({ type: 'status', status: 'disconnected', username: activeUsername });
       activeConnection = null;
