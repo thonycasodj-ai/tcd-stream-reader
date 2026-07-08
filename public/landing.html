@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCD Stream Reader — La tua chat live, letta ad alta voce</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bebas+Neue&display=swap');
+
+  :root{
+    --navy-deep: #08050f;
+    --purple: #b026ff;
+    --cyan: #00f0ff;
+    --mint: #7cffcb;
+    --coral: #ff2d78;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background:
+      linear-gradient(180deg, rgba(8,5,15,0.85), rgba(8,5,15,0.94)),
+      url('/assets/page-bg.jpg') center/cover fixed;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #fff;
+    min-height: 100vh;
+  }
+  .bg-glow{
+    position: fixed; inset: 0;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(176,38,255,0.3), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(0,240,255,0.2), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(255,45,120,0.18), transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+  .wrap{ max-width: 720px; margin: 0 auto; padding: 60px 20px 40px; position: relative; z-index: 1; }
+
+  .badge{
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 16px; border-radius: 20px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: rgba(255,255,255,0.65); margin-bottom: 22px;
+  }
+  .badge .dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--coral); box-shadow: 0 0 8px var(--coral); }
+
+  h1{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 54px; line-height: 1.05; letter-spacing: 1px;
+    margin-bottom: 18px;
+  }
+  h1 span{
+    background: linear-gradient(135deg, var(--cyan), var(--mint));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .subtitle{
+    font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.6; max-width: 520px; margin-bottom: 34px;
+  }
+
+  .hero-cta{ display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 60px; }
+
+  form.waitlist{
+    display: flex; gap: 10px; flex-wrap: wrap;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 16px;
+    padding: 8px;
+    max-width: 480px;
+  }
+  form.waitlist input{
+    flex: 1; min-width: 180px;
+    background: transparent; border: none; outline: none;
+    padding: 12px 14px; color: #fff; font-family: inherit; font-size: 14px;
+  }
+  form.waitlist input::placeholder{ color: rgba(255,255,255,0.35); }
+  form.waitlist button{
+    border: none; border-radius: 12px; padding: 12px 22px;
+    font-family: inherit; font-weight: 700; font-size: 13px; letter-spacing: 0.5px;
+    text-transform: uppercase; cursor: pointer;
+    background: linear-gradient(135deg, var(--cyan), var(--mint)); color: #08050f;
+    transition: transform 0.12s ease;
+  }
+  form.waitlist button:active{ transform: scale(0.96); }
+  .form-note{ font-size: 11.5px; color: rgba(255,255,255,0.4); margin-top: 10px; }
+  .success-msg{
+    display: none; background: rgba(124,255,203,0.12); border: 1px solid rgba(124,255,203,0.4);
+    color: var(--mint); padding: 14px 18px; border-radius: 14px; font-size: 14px; max-width: 480px;
+  }
+
+  section{ margin-bottom: 54px; }
+  .section-label{
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: rgba(255,255,255,0.4); margin-bottom: 14px;
+  }
+
+  .features{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 560px){ .features{ grid-template-columns: 1fr; } }
+  .feature{
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px; padding: 18px;
+  }
+  .feature .icon{ font-size: 22px; margin-bottom: 10px; }
+  .feature h3{ font-size: 14.5px; margin-bottom: 6px; }
+  .feature p{ font-size: 12.5px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+  .pricing{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 640px){ .pricing{ grid-template-columns: 1fr; } }
+  .price-card{
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px; padding: 22px 18px; text-align: center; position: relative;
+  }
+  .price-card.featured{
+    border-color: var(--cyan);
+    background: linear-gradient(165deg, rgba(0,240,255,0.1), rgba(255,255,255,0.03));
+  }
+  .price-card .tag{
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: var(--cyan); color: #08050f; font-size: 10px; font-weight: 700;
+    padding: 3px 12px; border-radius: 10px; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .price-card h4{ font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .price-card .amount{ font-family: 'Bebas Neue', sans-serif; font-size: 36px; margin-bottom: 4px; }
+  .price-card .amount span{ font-size: 14px; color: rgba(255,255,255,0.4); font-family: 'Space Grotesk', sans-serif; }
+  .price-card ul{ list-style: none; margin-top: 14px; text-align: left; }
+  .price-card li{ font-size: 12px; color: rgba(255,255,255,0.55); padding: 5px 0; }
+  .price-card li::before{ content: '✓ '; color: var(--mint); }
+
+  footer{ text-align: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.08); }
+  footer .mark{
+    font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  footer p{ font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<div class="wrap">
+
+  <div class="badge"><span class="dot"></span>In arrivo — accesso anticipato</div>
+
+  <h1>La chat della tua live<br><span>letta ad alta voce.</span><br>Automaticamente.</h1>
+  <p class="subtitle">
+    TCD Stream Reader ascolta la tua diretta TikTok e legge commenti, regali e nuovi ingressi
+    con una voce naturale — in qualsiasi lingua scrivano i tuoi spettatori. Niente più telefono
+    in mano mentre streammi.
+  </p>
+
+  <div class="hero-cta">
+    <form class="waitlist" id="waitlistForm">
+      <input type="email" id="emailInput" placeholder="La tua email" required>
+      <input type="text" id="tiktokInput" placeholder="Username TikTok (opzionale)">
+      <button type="submit">Iscrivimi</button>
+    </form>
+  </div>
+  <div class="success-msg" id="successMsg">Fatto! Ti scriveremo appena l'accesso è pronto. 🎉</div>
+  <p class="form-note">Zero spam. Solo un'email quando il prodotto è pronto, con uno sconto di lancio per chi si iscrive ora.</p>
+
+  <section>
+    <div class="section-label">Cosa fa</div>
+    <div class="features">
+      <div class="feature">
+        <div class="icon">🎙️</div>
+        <h3>Legge la chat in voce</h3>
+        <p>Ogni commento vero della tua live viene letto ad alta voce in tempo reale, senza dover guardare lo schermo.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🌍</div>
+        <h3>Multilingua automatico</h3>
+        <p>Riconosce la lingua del commento e legge con la pronuncia giusta — italiano, inglese, giapponese e altre.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">🎁</div>
+        <h3>Regali annunciati</h3>
+        <p>Ogni regalo ricevuto viene letto ad alta voce con nome di chi lo ha inviato.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">👋</div>
+        <h3>Ingressi in diretta</h3>
+        <p>Sai sempre chi entra nella tua live, annunciato in tempo reale senza sommergerti di notifiche.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-label">Prezzi di lancio</div>
+    <div class="pricing">
+      <div class="price-card">
+        <h4>Free</h4>
+        <div class="amount">0€<span>/mese</span></div>
+        <ul>
+          <li>Voce standard</li>
+          <li>1 live alla volta</li>
+          <li>Overlay OBS incluso</li>
+        </ul>
+      </div>
+      <div class="price-card featured">
+        <div class="tag">Consigliato</div>
+        <h4>Pro</h4>
+        <div class="amount">9€<span>/mese</span></div>
+        <ul>
+          <li>Voce naturale premium</li>
+          <li>Multilingua avanzato</li>
+          <li>Regali e ingressi inclusi</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <h4>Creator</h4>
+        <div class="amount">19€<span>/mese</span></div>
+        <ul>
+          <li>Tutto di Pro</li>
+          <li>Personaggio/branding custom</li>
+          <li>Supporto prioritario</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="mark">TCD</div>
+    <p>Stream Reader by Thony Caso DJ</p>
+  </footer>
+</div>
+
+<script>
+  const form = document.getElementById('waitlistForm');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value.trim();
+    const tiktokUsername = document.getElementById('tiktokInput').value.trim();
+    const btn = form.querySelector('button');
+    btn.disabled = true;
+    btn.textContent = '...';
+
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tiktokUsername })
+      });
+      if (res.ok) {
+        form.style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Errore, riprova.');
+        btn.disabled = false;
+        btn.textContent = 'Iscrivimi';
+      }
+    } catch (err) {
+      alert('Errore di connessione, riprova.');
+      btn.disabled = false;
+      btn.textContent = 'Iscrivimi';
+    }
+  });
+</script>
+</body>
+</html>

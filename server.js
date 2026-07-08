@@ -5,6 +5,7 @@
 import express from 'express';
 import http from 'http';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { WebSocketServer } from 'ws';
 import { TikTokLiveConnection } from 'tiktok-live-connector';
@@ -102,6 +103,43 @@ app.post('/api/disconnect', async (req, res) => {
     broadcast({ type: 'status', status: 'disconnected', username: activeUsername });
   }
   res.json({ ok: true });
+});
+
+const WAITLIST_FILE = path.join(__dirname, 'waitlist.json');
+
+function readWaitlist() {
+  try {
+    return JSON.parse(fs.readFileSync(WAITLIST_FILE, 'utf8'));
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveWaitlist(list) {
+  fs.writeFileSync(WAITLIST_FILE, JSON.stringify(list, null, 2));
+}
+
+// Endpoint: iscrizione alla waitlist della landing page
+app.post('/api/waitlist', (req, res) => {
+  const { email, tiktokUsername } = req.body;
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    return res.status(400).json({ error: 'Email non valida' });
+  }
+  const list = readWaitlist();
+  list.push({ email, tiktokUsername: tiktokUsername || '', date: new Date().toISOString() });
+  saveWaitlist(list);
+  console.log('Nuova iscrizione waitlist:', email, tiktokUsername || '');
+  res.json({ ok: true });
+});
+
+// Endpoint: vedere le iscrizioni raccolte (protetto da chiave semplice)
+// GET /admin/waitlist?key=LA_TUA_CHIAVE
+app.get('/admin/waitlist', (req, res) => {
+  const key = req.query.key;
+  if (!process.env.ADMIN_KEY || key !== process.env.ADMIN_KEY) {
+    return res.status(403).json({ error: 'Non autorizzato' });
+  }
+  res.json(readWaitlist());
 });
 
 app.get('/api/status', (req, res) => {
