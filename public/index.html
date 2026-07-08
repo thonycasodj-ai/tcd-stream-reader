@@ -192,10 +192,29 @@
 
   .footnote{ text-align: center; font-size: 10.5px; color: rgba(255,255,255,0.3); margin-top: 18px; line-height: 1.6; }
 
-  .brand-tag{
-    position: fixed; bottom: 14px; right: 16px;
-    font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 2px;
-    color: rgba(255,255,255,0.2); z-index: 1;
+  .powered-by{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .powered-by span{
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.3);
+    text-transform: uppercase;
+  }
+  .powered-by .mark{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--gold-soft), var(--purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 </style>
 </head>
@@ -239,9 +258,11 @@
     Apri questa pagina su telefono o come Browser Source in OBS mentre sei live.<br>
     Deve restare aperta per continuare a leggere i commenti.
   </div>
+  <div class="powered-by">
+    <span>Powered by</span>
+    <span class="mark">TCD</span>
+  </div>
 </div>
-
-<div class="brand-tag">TCD</div>
 
 <script>
   let ws = null;
