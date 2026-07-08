@@ -8,17 +8,19 @@
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bebas+Neue&display=swap');
 
   :root{
-    --navy-deep: #050714;
-    --navy: #0a0e27;
-    --purple: #7b2ff7;
-    --gold: #f5b942;
-    --gold-soft: #ffd97a;
-    --coral: #ff5f7e;
+    --navy-deep: #08050f;
+    --navy: #120a1f;
+    --purple: #b026ff;
+    --gold: #00f0ff;
+    --gold-soft: #7cffcb;
+    --coral: #ff2d78;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
 
   body{
-    background: var(--navy-deep);
+    background:
+      linear-gradient(180deg, rgba(8,5,15,0.82), rgba(8,5,15,0.93)),
+      url('/assets/page-bg.jpg') center/cover fixed;
     font-family: 'Space Grotesk', sans-serif;
     color: #fff;
     min-height: 100vh;
@@ -30,9 +32,9 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at 20% 0%, rgba(123,47,247,0.25), transparent 45%),
-      radial-gradient(circle at 85% 15%, rgba(245,185,66,0.18), transparent 40%),
-      radial-gradient(circle at 50% 100%, rgba(255,95,126,0.12), transparent 50%);
+      radial-gradient(circle at 20% 0%, rgba(176,38,255,0.32), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(0,240,255,0.22), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(255,45,120,0.2), transparent 50%);
     pointer-events: none;
     z-index: 0;
   }
@@ -78,7 +80,17 @@
     background-clip: text;
     color: transparent;
   }
+  .top-panel{ margin-top: 4px; }
+
   .hero p{ font-size: 12.5px; color: rgba(255,255,255,0.45); letter-spacing: 0.5px; margin-top: 6px; }
+
+  .lang-line{
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.32);
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+  }
+  .lang-line.small{ font-size: 9.5px; margin-top: 6px; line-height: 1.5; }
 
   .stage-card{
     position: relative;
@@ -95,7 +107,7 @@
     position: absolute;
     top: -50%; left: 50%;
     width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(245,185,66,0.18), transparent 65%);
+    background: radial-gradient(circle, rgba(0,240,255,0.22), transparent 65%);
     transform: translateX(-50%);
     pointer-events: none;
   }
@@ -105,18 +117,18 @@
     width: 96px; height: 96px;
     margin: 0 auto 18px;
     border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--purple) 75%);
+    background: url('/assets/avatar-bg.jpg') center/cover, radial-gradient(circle at 35% 30%, var(--gold-soft), var(--purple) 75%);
     display: flex; align-items: center; justify-content: center;
     font-size: 38px;
-    box-shadow: 0 0 0 0 rgba(245,185,66,0.5);
+    box-shadow: 0 0 0 0 rgba(0,240,255,0.5);
   }
   .avatar-orb.speaking{ animation: orbPulse 0.9s ease-out infinite; }
   @keyframes orbPulse{
-    0%{ box-shadow: 0 0 0 0 rgba(245,185,66,0.5); }
-    70%{ box-shadow: 0 0 0 22px rgba(245,185,66,0); }
-    100%{ box-shadow: 0 0 0 0 rgba(245,185,66,0); }
+    0%{ box-shadow: 0 0 0 0 rgba(0,240,255,0.55); }
+    70%{ box-shadow: 0 0 0 22px rgba(0,240,255,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(0,240,255,0); }
   }
-  .avatar-ring{ position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(245,185,66,0.3); }
+  .avatar-ring{ position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(0,240,255,0.35); }
 
   .reading-user{
     font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
@@ -160,6 +172,14 @@
   .btn:active{ transform: scale(0.96); }
   .btn.on{ background: linear-gradient(135deg, var(--coral), #ff8fa3); color: #2a0d16; }
 
+  .feed-panel{
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(165deg, rgba(8,5,15,0.88), rgba(8,5,15,0.93)),
+      url('/assets/avatar-bg.jpg') center/cover;
+  }
+
   .feed-label{
     font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
     color: rgba(255,255,255,0.4); margin-bottom: 10px; display: flex; justify-content: space-between;
@@ -171,16 +191,31 @@
   .bubble{
     background: rgba(255,255,255,0.05);
     border-radius: 14px;
-    padding: 10px 13px;
+    padding: 10px 34px 10px 13px;
     font-size: 13px;
     color: rgba(255,255,255,0.8);
     border-left: 3px solid var(--purple);
     animation: bubbleIn 0.3s ease;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+  .bubble:hover{ background: rgba(255,255,255,0.09); }
+  .bubble:hover .replay{ opacity: 1; }
+  .replay{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    color: var(--gold-soft);
+    opacity: 0;
+    transition: opacity 0.15s ease;
   }
   .bubble b{ color: var(--gold-soft); }
   .bubble.gift{
     border-left-color: var(--gold);
-    background: linear-gradient(90deg, rgba(245,185,66,0.1), rgba(255,255,255,0.04));
+    background: linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,255,255,0.04));
   }
   .bubble.join{
     border-left-color: #4ade80;
@@ -224,22 +259,7 @@
 
 <div class="wrap">
 
-  <div class="hero">
-    <div class="hero-badge"><span class="live-dot" id="liveDot"></span><span id="statusText">Non collegato</span></div>
-    <h1>STREAM READER</h1>
-    <p>La tua chat live, letta ad alta voce</p>
-  </div>
-
-  <div class="stage-card">
-    <div class="avatar-orb" id="avatarOrb">
-      <div class="avatar-ring"></div>
-      🎙️
-    </div>
-    <div class="reading-user" id="readingUser"></div>
-    <div class="reading-text idle" id="readingText">In attesa di commenti...</div>
-  </div>
-
-  <div class="panel">
+  <div class="panel top-panel">
     <label>Username TikTok (senza @)</label>
     <div class="input-row">
       <input type="text" id="usernameInput" placeholder="es. thonycasodj">
@@ -247,16 +267,35 @@
     </div>
   </div>
 
-  <div class="panel">
-    <div class="feed-label"><span>Ultimi eventi</span><span id="eventCount"></span></div>
+  <div class="hero">
+    <div class="hero-badge"><span class="live-dot" id="liveDot"></span><span id="statusText">Non collegato</span></div>
+    <h1>STREAM READER</h1>
+    <p>La tua chat live, letta ad alta voce</p>
+    <p class="lang-line">Your live chat, read aloud · Tu chat en vivo, leída en voz alta</p>
+  </div>
+
+  <div class="stage-card">
+    <div class="avatar-orb" id="avatarOrb">
+      <div class="avatar-ring"></div>
+    </div>
+    <div class="reading-user" id="readingUser"></div>
+    <div class="reading-text idle" id="readingText">In attesa di commenti...</div>
+  </div>
+
+  <div class="panel feed-panel">
     <div class="feed" id="feed">
       <div class="empty-feed">Nessun evento ancora</div>
     </div>
+    <div class="lang-line small">Latest events · click to replay — Últimos eventos · haz clic para repetir</div>
   </div>
 
   <div class="footnote">
     Apri questa pagina su telefono o come Browser Source in OBS mentre sei live.<br>
     Deve restare aperta per continuare a leggere i commenti.
+    <div class="lang-line small" style="margin-top:8px;">
+      Open this page on your phone or as a Browser Source in OBS while live. It must stay open to keep reading comments.<br>
+      Abre esta página en tu teléfono o como Browser Source en OBS mientras estás en vivo. Debe permanecer abierta.
+    </div>
   </div>
   <div class="powered-by">
     <span>Powered by</span>
@@ -270,7 +309,6 @@
   let speechQueue = [];
   let speaking = false;
   let history = [];
-  let lastJoinAnnounce = 0;
 
   function connectWebSocket(){
     const proto = location.protocol === 'https:' ? 'wss' : 'ws';
@@ -284,22 +322,23 @@
         updateStatus(data);
       }
       if(data.type === 'chat'){
-        addToFeed(data.user, data.text, false);
-        speechQueue.push(`${data.user} dice: ${data.text}`);
+        const spoken = `${data.user} dice: ${data.text}`;
+        addToFeed(data.user, data.text, false, false, spoken);
+        speechQueue.push(spoken);
         processSpeechQueue();
       }
       if(data.type === 'gift'){
         const label = `${data.giftName} x${data.repeatCount}`;
-        addToFeed(data.user, label, true);
-        speechQueue.push(`${data.user} ha inviato ${data.giftName}`);
+        const spoken = `${data.user} ha inviato ${data.giftName}`;
+        addToFeed(data.user, label, true, false, spoken);
+        speechQueue.push(spoken);
         processSpeechQueue();
       }
       if(data.type === 'join'){
-        addToFeed(data.user, 'è entrato in diretta', false, true);
-        const now = Date.now();
-        if(now - lastJoinAnnounce > 8000){
-          lastJoinAnnounce = now;
-          speechQueue.push(`${data.user} è entrato in diretta`);
+        const spoken = `${data.user} è entrato in diretta`;
+        addToFeed(data.user, 'è entrato in diretta', false, true, spoken);
+        if(speechQueue.length < 4){
+          speechQueue.push(spoken);
           processSpeechQueue();
         }
       }
@@ -340,8 +379,8 @@
     if(!res.ok) alert(data.error || 'Errore di connessione');
   }
 
-  function addToFeed(user, text, isGift, isJoin){
-    history.unshift({ user, text, isGift, isJoin });
+  function addToFeed(user, text, isGift, isJoin, spoken){
+    history.unshift({ user, text, isGift, isJoin, spoken });
     history = history.slice(0, 25);
     const feed = document.getElementById('feed');
     document.getElementById('eventCount').textContent = history.length ? `${history.length}` : '';
@@ -349,12 +388,23 @@
       feed.innerHTML = '<div class="empty-feed">Nessun evento ancora</div>';
       return;
     }
-    feed.innerHTML = history.map(item => {
+    feed.innerHTML = history.map((item, idx) => {
       const cls = item.isGift ? 'gift' : (item.isJoin ? 'join' : '');
       const icon = item.isGift ? ' 🎁' : (item.isJoin ? ' 👋' : '');
-      return `<div class="bubble ${cls}"><b>${item.user}${icon}</b> ${item.text}</div>`;
+      return `<div class="bubble ${cls}" data-idx="${idx}"><b>${item.user}${icon}</b> ${item.text}<span class="replay">▶</span></div>`;
     }).join('');
   }
+
+  // Clicca un evento nel feed per farlo rileggere ad alta voce
+  document.getElementById('feed').addEventListener('click', (e) => {
+    const bubble = e.target.closest('.bubble');
+    if(!bubble) return;
+    const idx = parseInt(bubble.dataset.idx, 10);
+    const item = history[idx];
+    if(!item || !item.spoken) return;
+    speechQueue.unshift(item.spoken);
+    processSpeechQueue();
+  });
 
   function detectLanguage(text){
     if(/[\u3040-\u30ff\u31f0-\u31ff]/.test(text)) return 'ja-JP';
@@ -363,9 +413,15 @@
     if(/[\u0600-\u06ff]/.test(text)) return 'ar-SA';
     if(/[\u0400-\u04ff]/.test(text)) return 'ru-RU';
     if(/[\u0e00-\u0e7f]/.test(text)) return 'th-TH';
-    if(/[àèéìòùçñ]/i.test(text) && /\b(el|la|los|las|que|para|muy)\b/i.test(text)) return 'es-ES';
-    if(/\b(le|la|les|est|pas|avec|pour|bonjour)\b/i.test(text)) return 'fr-FR';
-    if(/\b(the|you|is|are|and|thanks|love)\b/i.test(text)) return 'en-US';
+    // Per le lingue con lo stesso alfabeto (IT/EN/ES/FR) serve più di una sola
+    // parola chiave per cambiare voce, altrimenti sbaglia troppo spesso su messaggi corti.
+    const words = text.toLowerCase().split(/\s+/);
+    const enHits = words.filter(w => /^(the|you|is|are|and|thanks|love|please|good|nice)$/.test(w)).length;
+    const esHits = words.filter(w => /^(el|la|los|las|que|para|muy|gracias|hola)$/.test(w)).length;
+    const frHits = words.filter(w => /^(le|la|les|est|pas|avec|pour|bonjour|merci)$/.test(w)).length;
+    if(enHits >= 2) return 'en-US';
+    if(esHits >= 2) return 'es-ES';
+    if(frHits >= 2) return 'fr-FR';
     return 'it-IT';
   }
 
