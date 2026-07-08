@@ -116,8 +116,10 @@ app.post('/api/tts', async (req, res) => {
 
   const apiKey = process.env.ELEVENLABS_API_KEY;
   if (!apiKey) {
+    console.error('ELEVENLABS_API_KEY non impostata su Railway');
     return res.status(503).json({ error: 'ElevenLabs non configurato, uso voce di riserva' });
   }
+  console.log('Chiamata ElevenLabs, chiave letta:', apiKey.slice(0, 6) + '...' + apiKey.slice(-4), '| lunghezza:', apiKey.length);
 
   // Voce predefinita multilingua ("Rachel"). Si può sostituire con un'altra
   // voice_id di ElevenLabs impostando la variabile ELEVENLABS_VOICE_ID.
