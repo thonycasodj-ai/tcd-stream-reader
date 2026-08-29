@@ -222,6 +222,11 @@
     color: rgba(255,255,255,0.55);
     font-size: 12px;
   }
+  .bubble.bot{
+    border-left-color: var(--gold);
+    background: linear-gradient(90deg, rgba(176,38,255,0.18), rgba(255,255,255,0.04));
+    font-weight: 500;
+  }
   @keyframes bubbleIn{ from{ opacity: 0; transform: translateY(6px); } to{ opacity: 1; transform: translateY(0); } }
   .empty-feed{ font-size: 12px; color: rgba(255,255,255,0.25); padding: 4px 2px; }
 
@@ -322,10 +327,15 @@
         updateStatus(data);
       }
       if(data.type === 'chat'){
-        const spoken = `${data.user} dice: ${data.text}`;
-        addToFeed(data.user, data.text, false, false, spoken);
-        speechQueue.push(spoken);
-        processSpeechQueue();
+        const command = detectBotCommand(data.text);
+        if(command !== null){
+          handleBotCommand(data.user, command);
+        } else {
+          const spoken = `${data.user} dice: ${data.text}`;
+          addToFeed(data.user, data.text, false, false, spoken);
+          speechQueue.push(spoken);
+          processSpeechQueue();
+        }
       }
       if(data.type === 'gift'){
         const label = `${data.giftName} x${data.repeatCount}`;
@@ -362,6 +372,39 @@
     }
   }
 
+  // Riconosce i messaggi che iniziano con "bot/" e restituisce il comando (minuscolo),
+  // oppure null se il messaggio non è un comando per il bot.
+  function detectBotCommand(text){
+    const trimmed = (text || '').trim();
+    if(!/^bot\//i.test(trimmed)) return null;
+    return trimmed.slice(4).trim().toLowerCase();
+  }
+
+  // Comandi fissi e gratuiti (nessuna IA): risposte fisse o calcolate al volo.
+  // Un comando non riconosciuto viene ignorato in silenzio, per non riempire il feed di rumore.
+  function handleBotCommand(user, command){
+    let responseText;
+    let spoken;
+
+    if(command === 'skip'){
+      responseText = 'SKIP richiesto!';
+      spoken = `${user} ha chiesto lo skip`;
+    } else if(command === 'orario'){
+      const timeStr = new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+      responseText = `Sono le ${timeStr}`;
+      spoken = `Sono le ${timeStr}`;
+    } else if(command === 'comandi'){
+      responseText = 'Comandi disponibili: bot/skip, bot/orario, bot/comandi';
+      spoken = 'I comandi disponibili sono skip, orario e comandi';
+    } else {
+      return;
+    }
+
+    addToFeed(user, responseText, false, false, spoken, true);
+    speechQueue.push(spoken);
+    processSpeechQueue();
+  }
+
   async function toggleConnect(){
     if(connected){
       await fetch('/api/disconnect', { method: 'POST' });
@@ -379,18 +422,17 @@
     if(!res.ok) alert(data.error || 'Errore di connessione');
   }
 
-  function addToFeed(user, text, isGift, isJoin, spoken){
-    history.unshift({ user, text, isGift, isJoin, spoken });
+  function addToFeed(user, text, isGift, isJoin, spoken, isBot){
+    history.unshift({ user, text, isGift, isJoin, isBot, spoken });
     history = history.slice(0, 25);
     const feed = document.getElementById('feed');
-    document.getElementById('eventCount').textContent = history.length ? `${history.length}` : '';
     if(history.length === 0){
       feed.innerHTML = '<div class="empty-feed">Nessun evento ancora</div>';
       return;
     }
     feed.innerHTML = history.map((item, idx) => {
-      const cls = item.isGift ? 'gift' : (item.isJoin ? 'join' : '');
-      const icon = item.isGift ? ' 🎁' : (item.isJoin ? ' 👋' : '');
+      const cls = item.isBot ? 'bot' : (item.isGift ? 'gift' : (item.isJoin ? 'join' : ''));
+      const icon = item.isBot ? ' 🤖' : (item.isGift ? ' 🎁' : (item.isJoin ? ' 👋' : ''));
       return `<div class="bubble ${cls}" data-idx="${idx}"><b>${item.user}${icon}</b> ${item.text}<span class="replay">▶</span></div>`;
     }).join('');
   }
@@ -413,8 +455,6 @@
     if(/[\u0600-\u06ff]/.test(text)) return 'ar-SA';
     if(/[\u0400-\u04ff]/.test(text)) return 'ru-RU';
     if(/[\u0e00-\u0e7f]/.test(text)) return 'th-TH';
-    // Per le lingue con lo stesso alfabeto (IT/EN/ES/FR) serve più di una sola
-    // parola chiave per cambiare voce, altrimenti sbaglia troppo spesso su messaggi corti.
     const words = text.toLowerCase().split(/\s+/);
     const enHits = words.filter(w => /^(the|you|is|are|and|thanks|love|please|good|nice)$/.test(w)).length;
     const esHits = words.filter(w => /^(el|la|los|las|que|para|muy|gracias|hola)$/.test(w)).length;
@@ -469,7 +509,6 @@
       audio.onerror = () => { URL.revokeObjectURL(url); speakWithBrowser(text, finish); };
       audio.play();
     } catch(e){
-      // Voce di riserva (browser) se ElevenLabs non risponde
       speakWithBrowser(text, finish);
     }
   }
