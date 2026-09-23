@@ -136,10 +136,27 @@ app.post('/api/connect', async (req, res) => {
   const username = String(req.body.username || '').trim().replace(/^@/, '');
   const sid = String(req.body.sid || 'default');
   if (!username) return res.status(400).json({ error: 'Username mancante' });
-  getSession(sid).retries = 0;
+  const s = getSession(sid);
+  s.retries = 0;
+  const plan = planFor(req.body.code);
   try {
     await openConn(sid, username);
-    res.json({ ok: true, username });
+    let trialLeft = 0;
+    s.plan = plan;
+    s.premium = plan !== 'free';
+    if (plan === 'free') {
+      // Le prime dirette dell'account sono complete (voce realistica + bot completo)
+      const trials = readTrials();
+      const key = username.toLowerCase();
+      const used = trials[key] || 0;
+      if (used < FREE_TRIALS) {
+        s.premium = true;
+        trials[key] = used + 1;
+        saveTrials(trials);
+      }
+      trialLeft = Math.max(0, FREE_TRIALS - (trials[key] || used));
+    }
+    res.json({ ok: true, username, plan, premium: s.premium, trialLeft });
   } catch (err) {
     res.status(500).json({ error: 'Connessione fallita: la live è attiva? Errore: ' + err.message });
   }
@@ -165,6 +182,11 @@ setInterval(() => {
     }
   }
 }, 60 * 1000);
+
+const FREE_TRIALS = 2; // dirette complete gratuite per ogni account TikTok
+const TRIALS_FILE = path.join(__dirname, 'trials.json');
+function readTrials() { try { return JSON.parse(fs.readFileSync(TRIALS_FILE, 'utf8')); } catch (e) { return {}; } }
+function saveTrials(t) { try { fs.writeFileSync(TRIALS_FILE, JSON.stringify(t, null, 2)); } catch (e) {} }
 
 const WAITLIST_FILE = path.join(__dirname, 'waitlist.json');
 
@@ -218,6 +240,10 @@ app.post('/api/tts', async (req, res) => {
   let { lang } = req.body;
   if (!text) return res.status(400).json({ error: 'Testo mancante' });
 
+  // La voce realistica costa crediti: solo per Pro, Creator o dirette di prova
+  const sess = sessions.get(String(req.body.sid || ''));
+  if (!sess || !sess.premium) return res.status(403).json({ error: 'Voce realistica disponibile con il piano Pro' });
+
   const apiKey = (process.env.ELEVENLABS_API_KEY || '').trim();
   if (!apiKey) {
     console.error('ELEVENLABS_API_KEY non impostata nelle variabili del server');
@@ -263,12 +289,21 @@ app.get('/api/tts-status', (req, res) => {
   res.json({ elevenlabs: !!(process.env.ELEVENLABS_API_KEY || '').trim(), model: process.env.ELEVENLABS_MODEL || 'eleven_flash_v2_5' });
 });
 
-// Endpoint: sblocco funzioni PRO con codice
-// I codici validi si mettono nella variabile PRO_CODES su Bonto, separati da virgola (es. PRO-ANNA-2026,PRO-LUCA-2026)
+// ================== PIANI ==================
+// Codici Pro e Creator: variabili PRO_CODES e CREATOR_CODES su Bonto (separati da virgola)
+function codeList(name) {
+  return (process.env[name] || '').split(',').map(c => c.trim().toUpperCase()).filter(Boolean);
+}
+function planFor(code) {
+  code = String(code || '').trim().toUpperCase();
+  if (!code) return 'free';
+  if (codeList('CREATOR_CODES').includes(code)) return 'creator';
+  if (codeList('PRO_CODES').includes(code)) return 'pro';
+  return 'free';
+}
+
 app.post('/api/unlock', (req, res) => {
-  const code = String(req.body.code || '').trim().toUpperCase();
-  const codes = (process.env.PRO_CODES || '').split(',').map(c => c.trim().toUpperCase()).filter(Boolean);
-  res.json({ pro: !!code && codes.includes(code) });
+  res.json({ plan: planFor(req.body.code) });
 });
 
 const PORT = process.env.PORT || 3000;

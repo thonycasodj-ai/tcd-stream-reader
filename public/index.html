@@ -8,19 +8,19 @@
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bebas+Neue&display=swap');
 
   :root{
-    --navy-deep: #08050f;
-    --navy: #120a1f;
-    --purple: #b026ff;
-    --gold: #00f0ff;
-    --gold-soft: #7cffcb;
-    --coral: #ff2d78;
+    --navy-deep: #060d1a;
+    --navy: #0c1830;
+    --purple: #4f7cff;
+    --gold: #8fdcff;
+    --gold-soft: #e6f6ff;
+    --coral: #ff4f6d;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
 
   body{
     background:
-      linear-gradient(180deg, rgba(8,5,15,0.82), rgba(8,5,15,0.93)),
-      url('/assets/page-bg.jpg') center/cover fixed;
+      linear-gradient(180deg, rgba(6,13,26,0.82), rgba(6,13,26,0.93)),
+      radial-gradient(ellipse at 50% 120%, #1b3a66 0%, transparent 60%), linear-gradient(180deg, #0a1a33 0%, #060d1a 70%) fixed;
     font-family: 'Space Grotesk', sans-serif;
     color: #fff;
     min-height: 100vh;
@@ -32,9 +32,9 @@
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(circle at 20% 0%, rgba(176,38,255,0.32), transparent 45%),
-      radial-gradient(circle at 85% 15%, rgba(0,240,255,0.22), transparent 40%),
-      radial-gradient(circle at 50% 100%, rgba(255,45,120,0.2), transparent 50%);
+      radial-gradient(circle at 20% 0%, rgba(79,124,255,0.32), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(143,220,255,0.22), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(160,190,255,0.2), transparent 50%);
     pointer-events: none;
     z-index: 0;
   }
@@ -97,7 +97,7 @@
     border-radius: 26px;
     padding: 32px 20px 26px;
     margin-bottom: 18px;
-    background: linear-gradient(165deg, rgba(123,47,247,0.16), rgba(5,7,20,0.4) 60%);
+    background: linear-gradient(165deg, rgba(79,124,255,0.16), rgba(6,13,26,0.4) 60%);
     border: 1px solid rgba(255,255,255,0.1);
     overflow: hidden;
     text-align: center;
@@ -107,7 +107,7 @@
     position: absolute;
     top: -50%; left: 50%;
     width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(0,240,255,0.22), transparent 65%);
+    background: radial-gradient(circle, rgba(143,220,255,0.22), transparent 65%);
     transform: translateX(-50%);
     pointer-events: none;
   }
@@ -117,18 +117,19 @@
     width: 96px; height: 96px;
     margin: 0 auto 18px;
     border-radius: 50%;
-    background: url('/assets/avatar-bg.jpg') center/cover, radial-gradient(circle at 35% 30%, var(--gold-soft), var(--purple) 75%);
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--purple) 75%);
     display: flex; align-items: center; justify-content: center;
     font-size: 38px;
-    box-shadow: 0 0 0 0 rgba(0,240,255,0.5);
+    box-shadow: 0 0 0 0 rgba(143,220,255,0.5);
   }
   .avatar-orb.speaking{ animation: orbPulse 0.9s ease-out infinite; }
   @keyframes orbPulse{
-    0%{ box-shadow: 0 0 0 0 rgba(0,240,255,0.55); }
-    70%{ box-shadow: 0 0 0 22px rgba(0,240,255,0); }
-    100%{ box-shadow: 0 0 0 0 rgba(0,240,255,0); }
+    0%{ box-shadow: 0 0 0 0 rgba(143,220,255,0.55); }
+    70%{ box-shadow: 0 0 0 22px rgba(143,220,255,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(143,220,255,0); }
   }
-  .avatar-ring{ position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(0,240,255,0.35); }
+  .orb-mark{ font-family:"Bebas Neue",sans-serif; font-size:30px; letter-spacing:3px; color:#06111f; text-shadow:0 1px 0 rgba(255,255,255,.5); }
+  .avatar-ring{ position: absolute; inset: -8px; border-radius: 50%; border: 2px solid rgba(143,220,255,0.35); }
 
   .reading-user{
     font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
@@ -167,17 +168,17 @@
     letter-spacing: 0.8px; text-transform: uppercase; cursor: pointer;
     white-space: nowrap; transition: transform 0.12s ease;
     background: linear-gradient(135deg, var(--gold), var(--gold-soft));
-    color: #1a1226;
+    color: #06111f;
   }
   .btn:active{ transform: scale(0.96); }
-  .btn.on{ background: linear-gradient(135deg, var(--coral), #ff8fa3); color: #2a0d16; }
+  .btn.on{ background: linear-gradient(135deg, var(--coral), #ffa3b5); color: #06111f; }
 
   .feed-panel{
     position: relative;
     overflow: hidden;
     background:
-      linear-gradient(165deg, rgba(8,5,15,0.88), rgba(8,5,15,0.93)),
-      url('/assets/avatar-bg.jpg') center/cover;
+      linear-gradient(165deg, rgba(6,13,26,0.88), rgba(6,13,26,0.93)),
+      linear-gradient(160deg, #0c1830, #060d1a);
   }
 
   .feed-label{
@@ -215,12 +216,17 @@
   .bubble b{ color: var(--gold-soft); }
   .bubble.gift{
     border-left-color: var(--gold);
-    background: linear-gradient(90deg, rgba(0,240,255,0.12), rgba(255,255,255,0.04));
+    background: linear-gradient(90deg, rgba(143,220,255,0.12), rgba(255,255,255,0.04));
   }
   .bubble.join{
     border-left-color: #4ade80;
     color: rgba(255,255,255,0.55);
     font-size: 12px;
+  }
+  .bubble.bot{
+    border-left-color: var(--gold);
+    background: linear-gradient(90deg, rgba(79,124,255,0.18), rgba(255,255,255,0.04));
+    font-weight: 500;
   }
   @keyframes bubbleIn{ from{ opacity: 0; transform: translateY(6px); } to{ opacity: 1; transform: translateY(0); } }
   .empty-feed{ font-size: 12px; color: rgba(255,255,255,0.25); padding: 4px 2px; }
@@ -251,9 +257,47 @@
     background-clip: text;
     color: transparent;
   }
+
+  .pro-box{ margin-top:14px; padding:14px; border-radius:14px; border:1px dashed rgba(143,220,255,0.3); background:rgba(143,220,255,0.04); }
+  .pro-head{ display:flex; justify-content:space-between; align-items:center; }
+  .pro-head label{ margin:0; }
+  .pro-badge{ background:linear-gradient(135deg,var(--gold),var(--purple)); color:#060d1a; font-weight:700; padding:1px 6px; border-radius:6px; font-size:9px; margin-left:4px; }
+  .pro-state{ font-size:10.5px; color:rgba(255,255,255,0.5); }
+  .pro-state.on{ color:#4ade80; }
+  [hidden]{ display:none !important; }
+  .plan-pill{ font-size:10px; font-weight:700; letter-spacing:1.5px; padding:3px 9px; border-radius:8px; background:rgba(255,255,255,0.1); color:rgba(255,255,255,0.7); }
+  .plan-pill.pro{ background:linear-gradient(135deg,var(--gold),var(--purple)); color:#06111f; }
+  .plan-pill.creator{ background:linear-gradient(135deg,#ffffff,var(--gold)); color:#06111f; }
+  .plan-info{ font-size:12px; color:rgba(255,255,255,0.55); margin:8px 0 10px; line-height:1.5; }
+  .feature{ margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08); }
+  .feature input[type=text]{ width:100%; margin-bottom:8px; padding:11px 12px; font-size:13.5px; }
+  .custom-cmd{ display:grid; grid-template-columns:1fr 2fr; gap:8px; }
+  .pro-link{ display:inline-block; margin-top:9px; font-size:11px; color:var(--gold-soft); text-decoration:none; }
+  .voice-status{ font-size:10.5px; margin-top:12px; color:rgba(255,255,255,0.45); letter-spacing:.3px; }
+  .voice-status.ok{ color:#4ade80; }
+  .voice-status.warn{ color:#ffb347; }
 </style>
 </head>
 <body>
+<canvas id="snow" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1"></canvas>
+<script>
+// Neve leggera di sottofondo (si disattiva se il dispositivo chiede meno animazioni)
+(function(){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=document.getElementById('snow'), x=c.getContext('2d'); let W,H,f=[];
+  function size(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+  size(); addEventListener('resize', size);
+  for(let i=0;i<70;i++) f.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+0.6,s:Math.random()*0.5+0.25,d:Math.random()*Math.PI*2});
+  (function loop(){
+    x.clearRect(0,0,W,H); x.fillStyle='rgba(230,246,255,0.55)';
+    f.forEach(p=>{ p.y+=p.s; p.d+=0.01; p.x+=Math.sin(p.d)*0.3;
+      if(p.y>H){ p.y=-5; p.x=Math.random()*W; }
+      x.beginPath(); x.arc(p.x,p.y,p.r,0,Math.PI*2); x.fill(); });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+
 <div class="bg-glow"></div>
 <div class="bg-grid"></div>
 
@@ -265,6 +309,35 @@
       <input type="text" id="usernameInput" placeholder="es. thonycasodj">
       <button class="btn" id="connectBtn" onclick="toggleConnect()">Collega</button>
     </div>
+    <div class="pro-box" id="proBox">
+      <div class="pro-head">
+        <label>Il tuo piano</label>
+        <span class="plan-pill" id="planPill">FREE</span>
+      </div>
+      <p class="plan-info" id="planInfo">Le prime 2 dirette sono complete e gratis. Poi voce standard e bot base.</p>
+      <div class="input-row" id="codeRow">
+        <input type="text" id="proCode" placeholder="Codice Pro o Creator">
+        <button class="btn" id="unlockBtn" type="button">Attiva</button>
+      </div>
+      <a class="pro-link" id="upgradeLink" href="/landing.html#prezzi" target="_blank">Vedi i piani Pro e Creator →</a>
+
+      <div class="feature" id="songBox" hidden>
+        <label for="nowPlaying">Brano in onda <span class="pro-badge">PRO</span></label>
+        <input type="text" id="nowPlaying" placeholder="es. TCD - Lo Siento">
+      </div>
+
+      <div class="feature" id="creatorBox" hidden>
+        <label>Il tuo bot <span class="pro-badge">CREATOR</span></label>
+        <input type="text" id="cBotName" placeholder="Nome del bot (es. TCD Bot)">
+        <input type="text" id="cSocial" placeholder="I tuoi social (es. Instagram @tuonome)">
+        <input type="text" id="cAbout" placeholder="Chi sei, in una frase (risposta a bot info)">
+        <label style="margin-top:10px">Comandi personalizzati</label>
+        <div class="custom-cmd"><input type="text" id="cCmd1" placeholder="parola (es. merch)"><input type="text" id="cRep1" placeholder="risposta del bot"></div>
+        <div class="custom-cmd"><input type="text" id="cCmd2" placeholder="parola"><input type="text" id="cRep2" placeholder="risposta del bot"></div>
+        <div class="custom-cmd"><input type="text" id="cCmd3" placeholder="parola"><input type="text" id="cRep3" placeholder="risposta del bot"></div>
+      </div>
+    </div>
+    <div class="voice-status" id="voiceStatus">Controllo voce...</div>
   </div>
 
   <div class="hero">
@@ -276,6 +349,7 @@
 
   <div class="stage-card">
     <div class="avatar-orb" id="avatarOrb">
+      <span class="orb-mark">TCD</span>
       <div class="avatar-ring"></div>
     </div>
     <div class="reading-user" id="readingUser"></div>
@@ -309,172 +383,511 @@
   let speechQueue = [];
   let speaking = false;
   let history = [];
+  let currentAudio = null;
 
+  // Codice di sessione di questa pagina: il server manda i commenti solo qui
+  let SID = null;
+  try { SID = localStorage.getItem('tcdSid'); } catch(e){}
+  if(!SID){ SID = Math.random().toString(36).slice(2) + Date.now().toString(36); try { localStorage.setItem('tcdSid', SID); } catch(e){} }
+
+  // ================== IMPOSTAZIONI BOT (modificabili) ==================
+  const BOT = {
+    instagram: '@thony_caso_dj_official',
+    tiktok: '@thonycasodj'
+  };
+  // =====================================================================
+
+  const $ = (id) => document.getElementById(id);
+  // ---------- Lingua automatica ----------
+  // Per ogni spettatore ricorda la lingua in cui scrive; per la live usa la lingua più usata in chat.
+  const userLang = {};
+  let recentLangs = [];
+  const browserLang = (navigator.language || 'it').slice(0,2).toLowerCase();
+  function mainLang(){
+    if(!recentLangs.length) return ['it','en','es'].includes(browserLang) ? browserLang : 'it';
+    const count = {};
+    recentLangs.forEach(l => count[l] = (count[l] || 0) + 1);
+    return Object.keys(count).sort((a,b) => count[b] - count[a])[0];
+  }
+  const uiLang = ['it','en','es'].includes(browserLang) ? browserLang : 'it'; // testi della pagina per chi fa la live
+  function langFor(user){ return userLang[user] || mainLang(); }
+  function rememberLang(user, lang, sure){
+    if(!sure) return;
+    userLang[user] = lang;
+    recentLangs.push(lang);
+    if(recentLangs.length > 30) recentLangs.shift();
+  }
+
+  // ---------- PIANI: free / pro / creator ----------
+  let plan = 'free';        // piano del codice inserito
+  let premium = false;      // voce realistica + bot completo in questa diretta (Pro, Creator o diretta di prova)
+  let trialLeft = null;
+  let proCode = '';
+  try { proCode = localStorage.getItem('tcdProCode') || ''; } catch(e){}
+
+  // Livello del bot: 'free' (base), 'pro' (completo), 'creator' (completo + personalizzato)
+  const tier = () => plan === 'creator' ? 'creator' : (plan === 'pro' || premium) ? 'pro' : 'free';
+
+  function renderPlan(){
+    const pill = $('planPill');
+    pill.textContent = plan.toUpperCase();
+    pill.className = 'plan-pill ' + plan;
+    const info = $('planInfo');
+    if(plan === 'creator') info.textContent = 'Voce realistica, bot completo e bot personalizzato con i tuoi comandi.';
+    else if(plan === 'pro') info.textContent = 'Voce realistica e bot completo con brano in onda, richieste e skip.';
+    else if(premium) info.textContent = `Diretta di prova completa attiva! Ti resta ancora ${trialLeft} diretta gratuita completa.`.replace('ancora 0 diretta gratuita completa', 'nessuna diretta di prova dopo questa');
+    else if(trialLeft === 0) info.textContent = 'Dirette di prova finite: voce standard e bot base. Passa a Pro per la voce realistica e il bot completo.';
+    else info.textContent = 'Le prime 2 dirette sono complete e gratis. Poi voce standard e bot base.';
+    $('codeRow').hidden = plan !== 'free';
+    $('upgradeLink').hidden = plan === 'creator';
+    $('upgradeLink').textContent = plan === 'pro' ? 'Passa a Creator per il bot personalizzato →' : 'Vedi i piani Pro e Creator →';
+    $('songBox').hidden = plan === 'free';
+    $('creatorBox').hidden = plan !== 'creator';
+    showVoiceStatus();
+  }
+
+  async function tryUnlock(code, silent){
+    if(!code) return;
+    try {
+      const r = await fetch('/api/unlock', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ code }) });
+      const d = await r.json();
+      if(d.plan && d.plan !== 'free'){
+        plan = d.plan; proCode = code;
+        try { localStorage.setItem('tcdProCode', code); } catch(e){}
+        renderPlan();
+      } else if(!silent){
+        alert('Codice non valido');
+      }
+    } catch(e){}
+  }
+  $('unlockBtn').addEventListener('click', () => tryUnlock($('proCode').value.trim(), false));
+  tryUnlock(proCode, true);
+
+  // Impostazioni Creator, salvate su questo dispositivo
+  const CREATOR_FIELDS = ['cBotName','cSocial','cAbout','cCmd1','cRep1','cCmd2','cRep2','cCmd3','cRep3'];
+  try {
+    const c = JSON.parse(localStorage.getItem('tcdCreator') || '{}');
+    CREATOR_FIELDS.forEach(id => { if(c[id]) $(id).value = c[id]; });
+  } catch(e){}
+  CREATOR_FIELDS.forEach(id => $(id).addEventListener('change', () => {
+    const c = {}; CREATOR_FIELDS.forEach(k => c[k] = $(k).value.trim());
+    try { localStorage.setItem('tcdCreator', JSON.stringify(c)); } catch(e){}
+  }));
+  const cv = (id) => (plan === 'creator' ? $(id).value.trim() : '');
+  const botName = () => cv('cBotName') || 'Bot';
+  let liveUser = '';
+
+  // Ricorda lingua e brano in onda tra un'apertura e l'altra
+  try {
+    const saved = JSON.parse(localStorage.getItem('tcdReaderSettings') || '{}');
+    if(saved.song) $('nowPlaying').value = saved.song;
+    if(saved.user) $('usernameInput').value = saved.user;
+  } catch(e){}
+  function saveSettings(){
+    try {
+      localStorage.setItem('tcdReaderSettings', JSON.stringify({
+        song: $('nowPlaying').value.trim(), user: $('usernameInput').value.trim()
+      }));
+    } catch(e){}
+  }
+  ['nowPlaying','usernameInput'].forEach(id => $(id).addEventListener('change', saveSettings));
+
+  // ---------- Frasi in più lingue ----------
+  const T = {
+    says:   { it:'{u} dice: {t}', en:'{u} says: {t}', es:'{u} dice: {t}', fr:'{u} dit : {t}', pt:'{u} diz: {t}', de:'{u} sagt: {t}', ja:'{u}: {t}', ko:'{u}: {t}', zh:'{u}: {t}', ar:'{u}: {t}', ru:'{u}: {t}', hi:'{u}: {t}' },
+    gift:   { it:'Grazie {u} per {g}!', en:'Thank you {u} for the {g}!', es:'¡Gracias {u} por {g}!' },
+    giftN:  { it:'Grazie {u} per {n} {g}!', en:'Thank you {u} for {n} {g}!', es:'¡Gracias {u} por {n} {g}!' },
+    join:   { it:'Benvenuto {u}!', en:'Welcome {u}!', es:'¡Bienvenido {u}!' },
+    joinTxt:{ it:'è entrato in diretta', en:'joined the live', es:'entró al directo' },
+    idle:   { it:'In attesa di commenti...', en:'Waiting for comments...', es:'Esperando comentarios...' },
+    connected:{ it:'Collegato a @{u}', en:'Connected to @{u}', es:'Conectado a @{u}' },
+    notConnected:{ it:'Non collegato', en:'Not connected', es:'No conectado' }
+  };
+  const pick3 = (l) => ['it','en','es'].includes(l) ? l : 'en';
+  function tr(key, lang, vars){
+    const table = T[key];
+    let str = table[lang] || table[mainLang()] || table.it;
+    for(const k in vars) str = str.split('{'+k+'}').join(vars[k]);
+    return str;
+  }
+
+  // ---------- Riconoscimento lingua (a punteggio) ----------
+  const WORDS = {
+    it: 'ciao come stai sei sono che non per una della questo bello bella grazie buona sera notte anche molto tutti dove ciò perché fratello brava bravo ragazzi il lo gli di da con mi ti ci vi io tu lui lei noi voi è ho hai ha siamo bellissima canzone forte grande'.split(' '),
+    en: 'the you your is are and thanks thank love please good nice hello hi what how this that with from for my me it bro song fire amazing yes no can do dont i im its we they so great wow cool play'.split(' '),
+    es: 'el los las que para muy gracias hola como estas eres soy una del esto buenas noches tambien todos donde porque hermano amigo bueno buena y yo tu mi te se es por con cancion fuego saludos desde qué cómo está'.split(' '),
+    fr: 'le les est pas avec pour bonjour merci salut je tu il elle nous vous ils sont une des du ce cette trop très bien oui non mais'.split(' '),
+    pt: 'obrigado obrigada olá oi você voce muito tudo bem não nao eu ele ela nós são uma do da isso esse essa boa noite também música legal'.split(' '),
+    de: 'der die das und ist nicht ich du er sie wir ihr danke hallo gut sehr mit für auf ein eine schön ja nein'.split(' ')
+  };
+  function detectLanguage(text){
+    const t = (text || '');
+    if(/[぀-ヿㇰ-ㇿ]/.test(t)) return 'ja';
+    if(/[가-힯]/.test(t)) return 'ko';
+    if(/[一-鿿]/.test(t)) return 'zh';
+    if(/[؀-ۿ]/.test(t)) return 'ar';
+    if(/[Ѐ-ӿ]/.test(t)) return 'ru';
+    if(/[ऀ-ॿ]/.test(t)) return 'hi';
+    if(/[ñ¿¡]/i.test(t)) return 'es';
+    if(/[ãõç]/i.test(t) && !/[ñ]/i.test(t)) return 'pt';
+    if(/[äöüß]/i.test(t)) return 'de';
+    const words = t.toLowerCase().replace(/[^\p{L}\s']/gu,' ').split(/\s+/).filter(Boolean);
+    let best = null, bestScore = 0;
+    for(const lang in WORDS){
+      const score = words.filter(w => WORDS[lang].includes(w)).length;
+      if(score > bestScore){ best = lang; bestScore = score; }
+    }
+    return bestScore > 0 ? best : null;
+  }
+
+  const BCP = { it:'it-IT', en:'en-US', es:'es-ES', fr:'fr-FR', pt:'pt-BR', de:'de-DE', ja:'ja-JP', ko:'ko-KR', zh:'zh-CN', ar:'ar-SA', ru:'ru-RU', hi:'hi-IN' };
+
+  // ---------- WebSocket ----------
   function connectWebSocket(){
     const proto = location.protocol === 'https:' ? 'wss' : 'ws';
-    ws = new WebSocket(`${proto}://${location.host}`);
+    ws = new WebSocket(`${proto}://${location.host}/?sid=${encodeURIComponent(SID)}`);
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
 
       if(data.type === 'status'){
-        connected = data.status === 'connected';
+        connected = data.status === 'connected' || data.status === 'reconnecting';
         updateStatus(data);
+        if(data.status === 'disconnected') stopSpeech();
       }
       if(data.type === 'chat'){
-        const spoken = `${data.user} dice: ${data.text}`;
-        addToFeed(data.user, data.text, false, false, spoken);
-        speechQueue.push(spoken);
-        processSpeechQueue();
-      }
-      if(data.type === 'gift'){
-        const label = `${data.giftName} x${data.repeatCount}`;
-        const spoken = `${data.user} ha inviato ${data.giftName}`;
-        addToFeed(data.user, label, true, false, spoken);
-        speechQueue.push(spoken);
-        processSpeechQueue();
-      }
-      if(data.type === 'join'){
-        const spoken = `${data.user} è entrato in diretta`;
-        addToFeed(data.user, 'è entrato in diretta', false, true, spoken);
-        if(speechQueue.length < 4){
-          speechQueue.push(spoken);
-          processSpeechQueue();
+        const detected = detectLanguage(data.text);
+        rememberLang(data.user, detected, !!detected);
+        const lang = detected || langFor(data.user);
+        const command = detectBotCommand(data.text);
+        if(command === null || !handleBotCommand(data.user, command, lang, data.text)){
+          const spoken = tr('says', lang, { u: data.user, t: data.text });
+          addToFeed(data.user, data.text, false, false, spoken, false, lang);
+          enqueue(spoken, lang);
         }
       }
+      if(data.type === 'gift'){
+        const lang = pick3(langFor(data.user));
+        const n = data.repeatCount || 1;
+        const label = `${data.giftName} x${n}`;
+        const spoken = n > 1
+          ? tr('giftN', lang, { u: data.user, n, g: data.giftName })
+          : tr('gift', lang, { u: data.user, g: data.giftName });
+        addToFeed(data.user, label, true, false, spoken, false, lang);
+        enqueue(spoken, lang);
+      }
+      if(data.type === 'join'){
+        const lang = pick3(langFor(data.user));
+        const spoken = tr('join', lang, { u: data.user });
+        addToFeed(data.user, tr('joinTxt', lang, {}), false, true, spoken, false, lang);
+        if(speechQueue.length < 3) enqueue(spoken, lang);
+      }
     };
+
+    // Se la connessione cade (es. Bonto si riavvia), si ricollega da solo
+    ws.onclose = () => setTimeout(connectWebSocket, 3000);
   }
 
   function updateStatus(data){
-    const dot = document.getElementById('liveDot');
-    const statusText = document.getElementById('statusText');
-    const btn = document.getElementById('connectBtn');
-    if(data.status === 'connected'){
-      statusText.textContent = `Collegato a @${data.username}`;
+    const dot = $('liveDot'), statusText = $('statusText'), btn = $('connectBtn');
+    if(data.status === 'reconnecting'){
+      statusText.textContent = `Ricollegamento in corso... (${data.attempt}/3)`;
+      dot.classList.add('on');
+      btn.textContent = 'Disconnetti';
+      btn.classList.add('on');
+    } else if(data.status === 'connected'){
+      statusText.textContent = tr('connected', uiLang, { u: data.username });
       dot.classList.add('on');
       btn.textContent = 'Disconnetti';
       btn.classList.add('on');
     } else {
-      statusText.textContent = 'Non collegato';
+      statusText.textContent = data.reason === 'ended' ? 'Live terminata · scollegato'
+        : data.reason === 'lost' ? 'Connessione persa · premi Collega' : tr('notConnected', uiLang, {});
       dot.classList.remove('on');
       btn.textContent = 'Collega';
       btn.classList.remove('on');
     }
   }
 
+  // ---------- BOT ----------
+  // Riconosce "bot/comando", "bot comando" oppure "!comando"
+  function detectBotCommand(text){
+    const t = (text || '').trim();
+    let m = t.match(/^bot(?:\s*[\/:]\s*|\s+)(.+)$/i);
+    if(!m) m = t.match(/^!(\S+.*)$/);
+    if(!m) return null;
+    return m[1].trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  }
+
+  const CMD_ALIASES = {
+    ciao:    ['ciao','hello','hi','hola','salve','buongiorno','buonasera'],
+    orario:  ['orario','ora','time','hora','che ore sono'],
+    comandi: ['comandi','commands','comandos','help','aiuto','ayuda'],
+    canzone: ['canzone','song','cancion','brano','track','musica','music'],
+    social:  ['social','instagram','ig','insta','redes'],
+    chi:     ['chi','dj','who','quien','info'],
+    skip:    ['skip','salta','next','siguiente'],
+    richiesta:['richiesta','request','pedido','req'],
+    regole:  ['regole','rules','reglas']
+  };
+  const FREE_CMDS = ['ciao','orario','comandi','regole'];
+  function findCommand(cmd){
+    const first = cmd.split(/\s+/)[0];
+    for(const key in CMD_ALIASES){
+      if(CMD_ALIASES[key].includes(cmd) || CMD_ALIASES[key].includes(first)) return key;
+    }
+    return null;
+  }
+
+  function botReply(key, user, lang, rest){
+    const L = ['it','en','es'].includes(lang) ? lang : 'en';
+    const time = new Date().toLocaleTimeString(BCP[L], { hour:'2-digit', minute:'2-digit' });
+    const song = $('nowPlaying').value.trim();
+    const host = liveUser ? '@' + liveUser : 'questa live';
+    const full = tier() !== 'free';
+    const R = {
+      ciao: {
+        it:`Ciao ${user}! Benvenuto nella live di ${host}, mettiti comodo!`,
+        en:`Hey ${user}! Welcome to ${host}'s live!`,
+        es:`¡Hola ${user}! Bienvenido al directo de ${host}!`
+      },
+      orario: { it:`Qui sono le ${time}`, en:`It's ${time} here`, es:`Aquí son las ${time}` },
+      comandi: full
+        ? { it:'Comandi: bot ciao, bot canzone, bot social, bot info, bot orario, bot richiesta, bot skip, bot regole',
+            en:'Commands: bot hello, bot song, bot social, bot info, bot time, bot request, bot skip, bot rules',
+            es:'Comandos: bot hola, bot cancion, bot social, bot info, bot hora, bot pedido, bot skip, bot reglas' }
+        : { it:'Comandi: bot ciao, bot orario, bot regole', en:'Commands: bot hello, bot time, bot rules', es:'Comandos: bot hola, bot hora, bot reglas' },
+      canzone: song
+        ? { it:`Ora in onda: ${song}`, en:`Now playing: ${song}`, es:`Sonando ahora: ${song}` }
+        : { it:`Chiedi a ${host} il nome del brano!`, en:`Ask ${host} for the track name!`, es:`¡Pregunta a ${host} el nombre de la canción!` },
+      social: cv('cSocial')
+        ? { it:`Segui anche qui: ${cv('cSocial')}`, en:`Follow here too: ${cv('cSocial')}`, es:`Sigue también aquí: ${cv('cSocial')}` }
+        : { it:`Segui ${host} su TikTok per non perdere le prossime live!`, en:`Follow ${host} on TikTok for the next lives!`, es:`¡Sigue a ${host} en TikTok para los próximos directos!` },
+      chi: cv('cAbout')
+        ? { it:cv('cAbout'), en:cv('cAbout'), es:cv('cAbout') }
+        : { it:`Sei nella live di ${host}. Lascia un like e resta con noi!`, en:`You're watching ${host}. Drop a like and stay!`, es:`Estás en el directo de ${host}. ¡Deja un like y quédate!` },
+      skip: { it:`${user} chiede di saltare il brano!`, en:`${user} wants to skip this track!`, es:`¡${user} pide saltar la canción!` },
+      richiesta: rest
+        ? { it:`Richiesta di ${user}: ${rest}. Segnata!`, en:`Request from ${user}: ${rest}. Noted!`, es:`Pedido de ${user}: ${rest}. ¡Anotado!` }
+        : { it:'Scrivi bot richiesta e il nome del brano', en:'Type bot request and the song name', es:'Escribe bot pedido y el nombre de la canción' },
+      regole: {
+        it:'Regole: rispetto per tutti, niente spam, solo buone vibes!',
+        en:'Rules: respect everyone, no spam, only good vibes!',
+        es:'Reglas: respeto para todos, nada de spam, ¡solo buenas vibras!'
+      }
+    };
+    return { text: R[key][L], lang: L };
+  }
+
+  function sayBot(text, lang){
+    addToFeed(botName(), text, false, false, text, true, lang);
+    enqueue(text, lang);
+  }
+
+  function handleBotCommand(user, command, lang, raw){
+    const first = command.split(/\s+/)[0];
+
+    // Comandi personalizzati (solo Creator)
+    if(tier() === 'creator'){
+      for(const n of [1,2,3]){
+        const word = $('cCmd'+n).value.trim().toLowerCase().replace(/^bot\s*\/?\s*|^!/, '');
+        const reply = $('cRep'+n).value.trim();
+        if(word && reply && (command === word || first === word)){
+          sayBot(reply.split('{utente}').join(user), detectLanguage(reply) || lang);
+          return true;
+        }
+      }
+    }
+
+    const key = findCommand(command);
+    if(!key) return false; // comando sconosciuto: viene letto come un commento normale
+
+    const rest = (raw || '').trim().replace(/^(bot(?:\s*[\/:]\s*|\s+)|!)\S+\s*/i, '');
+    const aliasLang = { hello:'en',hi:'en',time:'en',commands:'en',help:'en',song:'en',track:'en',music:'en',who:'en',next:'en',request:'en',rules:'en',
+                        hola:'es',hora:'es',comandos:'es',ayuda:'es',cancion:'es',redes:'es',quien:'es',siguiente:'es',pedido:'es',reglas:'es' };
+    const replyLang = aliasLang[first] || (['it','en','es'].includes(lang) ? lang : mainLang());
+
+    // Piano Free senza prova: solo comandi base
+    if(tier() === 'free' && !FREE_CMDS.includes(key)){
+      const msg = { it:'Questo comando è disponibile con il piano Pro', en:'This command is available with the Pro plan', es:'Este comando está disponible con el plan Pro' };
+      addToFeed(botName(), msg[['it','en','es'].includes(replyLang) ? replyLang : 'en'], false, false, '', true, replyLang);
+      return true; // non viene letto, per non disturbare la live
+    }
+
+    const r = botReply(key, user, replyLang, rest);
+    sayBot(r.text, r.lang);
+    return true;
+  }
+
+  // ---------- Connessione ----------
   async function toggleConnect(){
     if(connected){
-      await fetch('/api/disconnect', { method: 'POST' });
+      // Scollega SUBITO la pagina, anche se il server o TikTok non rispondono
+      connected = false;
+      updateStatus({ status: 'disconnected' });
+      stopSpeech();
+      fetch('/api/disconnect', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sid: SID }) }).catch(() => {});
       return;
     }
-    const username = document.getElementById('usernameInput').value.trim();
+    const username = $('usernameInput').value.trim().replace(/^@/, '');
     if(!username) return alert('Inserisci il tuo username TikTok');
+    saveSettings();
+    unlockAudio();
 
+    const btn = $('connectBtn');
+    btn.textContent = '...';
     const res = await fetch('/api/connect', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username })
+      body: JSON.stringify({ username, sid: SID, code: proCode })
     });
     const data = await res.json();
-    if(!res.ok) alert(data.error || 'Errore di connessione');
+    if(!res.ok){ btn.textContent = 'Collega'; alert(data.error || 'Errore di connessione'); return; }
+    liveUser = data.username;
+    premium = !!data.premium;
+    trialLeft = data.trialLeft;
+    if(data.plan) plan = data.plan;
+    elevenOk = premium && elevenConfigured;
+    renderPlan();
   }
 
-  function addToFeed(user, text, isGift, isJoin, spoken){
-    history.unshift({ user, text, isGift, isJoin, spoken });
+  // ---------- Feed ----------
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function addToFeed(user, text, isGift, isJoin, spoken, isBot, lang){
+    history.unshift({ user, text, isGift, isJoin, isBot, spoken, lang });
     history = history.slice(0, 25);
-    const feed = document.getElementById('feed');
-    document.getElementById('eventCount').textContent = history.length ? `${history.length}` : '';
-    if(history.length === 0){
-      feed.innerHTML = '<div class="empty-feed">Nessun evento ancora</div>';
-      return;
-    }
+    const feed = $('feed');
     feed.innerHTML = history.map((item, idx) => {
-      const cls = item.isGift ? 'gift' : (item.isJoin ? 'join' : '');
-      const icon = item.isGift ? ' 🎁' : (item.isJoin ? ' 👋' : '');
-      return `<div class="bubble ${cls}" data-idx="${idx}"><b>${item.user}${icon}</b> ${item.text}<span class="replay">▶</span></div>`;
+      const cls = item.isBot ? 'bot' : (item.isGift ? 'gift' : (item.isJoin ? 'join' : ''));
+      const icon = item.isBot ? ' 🤖' : (item.isGift ? ' 🎁' : (item.isJoin ? ' 👋' : ''));
+      return `<div class="bubble ${cls}" data-idx="${idx}"><b>${escapeHtml(item.user)}${icon}</b> ${escapeHtml(item.text)}<span class="replay">▶</span></div>`;
     }).join('');
   }
 
-  // Clicca un evento nel feed per farlo rileggere ad alta voce
-  document.getElementById('feed').addEventListener('click', (e) => {
+  $('feed').addEventListener('click', (e) => {
     const bubble = e.target.closest('.bubble');
     if(!bubble) return;
-    const idx = parseInt(bubble.dataset.idx, 10);
-    const item = history[idx];
+    const item = history[parseInt(bubble.dataset.idx, 10)];
     if(!item || !item.spoken) return;
-    speechQueue.unshift(item.spoken);
+    speechQueue.unshift({ text: item.spoken, lang: item.lang || mainLang() });
     processSpeechQueue();
   });
 
-  function detectLanguage(text){
-    if(/[\u3040-\u30ff\u31f0-\u31ff]/.test(text)) return 'ja-JP';
-    if(/[\uac00-\ud7af]/.test(text)) return 'ko-KR';
-    if(/[\u4e00-\u9fff]/.test(text)) return 'zh-CN';
-    if(/[\u0600-\u06ff]/.test(text)) return 'ar-SA';
-    if(/[\u0400-\u04ff]/.test(text)) return 'ru-RU';
-    if(/[\u0e00-\u0e7f]/.test(text)) return 'th-TH';
-    // Per le lingue con lo stesso alfabeto (IT/EN/ES/FR) serve più di una sola
-    // parola chiave per cambiare voce, altrimenti sbaglia troppo spesso su messaggi corti.
-    const words = text.toLowerCase().split(/\s+/);
-    const enHits = words.filter(w => /^(the|you|is|are|and|thanks|love|please|good|nice)$/.test(w)).length;
-    const esHits = words.filter(w => /^(el|la|los|las|que|para|muy|gracias|hola)$/.test(w)).length;
-    const frHits = words.filter(w => /^(le|la|les|est|pas|avec|pour|bonjour|merci)$/.test(w)).length;
-    if(enHits >= 2) return 'en-US';
-    if(esHits >= 2) return 'es-ES';
-    if(frHits >= 2) return 'fr-FR';
-    return 'it-IT';
+  // ---------- Voce ----------
+  function enqueue(text, lang){
+    // Se la chat è velocissima, non accumula ritardo: tiene solo gli ultimi messaggi
+    if(speechQueue.length > 8) speechQueue.splice(0, speechQueue.length - 8);
+    speechQueue.push({ text, lang });
+    processSpeechQueue();
   }
 
-  function speakWithBrowser(text, onDone){
+  // Sceglie la voce del browser più naturale disponibile (Google / Microsoft Natural / Online)
+  let voices = [];
+  function loadVoices(){ voices = speechSynthesis.getVoices(); }
+  loadVoices();
+  if('onvoiceschanged' in speechSynthesis) speechSynthesis.onvoiceschanged = loadVoices;
+
+  function bestVoice(lang){
+    const code = BCP[lang] || lang;
+    const same = voices.filter(v => v.lang && v.lang.toLowerCase().startsWith(lang));
+    if(!same.length) return null;
+    const rank = v => (/natural|neural|online/i.test(v.name) ? 3 : 0) + (/google/i.test(v.name) ? 2 : 0) + (v.lang === code ? 1 : 0);
+    return same.sort((a,b) => rank(b) - rank(a))[0];
+  }
+
+  function speakWithBrowser(text, lang, onDone){
     const utter = new SpeechSynthesisUtterance(text);
-    utter.lang = detectLanguage(text);
-    utter.rate = 1.05;
+    utter.lang = BCP[lang] || 'it-IT';
+    const v = bestVoice(lang);
+    if(v) utter.voice = v;
+    utter.rate = 1.0;
+    utter.pitch = 1.0;
     utter.onend = onDone;
     utter.onerror = onDone;
     speechSynthesis.speak(utter);
   }
 
+  // Sblocca l'audio al primo clic (i browser bloccano l'audio automatico)
+  let audioUnlocked = false;
+  function unlockAudio(){
+    if(audioUnlocked) return;
+    audioUnlocked = true;
+    try { const a = new Audio(); a.muted = true; a.play().catch(()=>{}); } catch(e){}
+  }
+  document.addEventListener('click', unlockAudio, { once: true });
+
+  let elevenOk = false;
   async function processSpeechQueue(){
     if(speaking || speechQueue.length === 0) return;
     speaking = true;
-    const text = speechQueue.shift();
+    const { text, lang } = speechQueue.shift();
 
-    const readingText = document.getElementById('readingText');
+    const readingText = $('readingText');
     readingText.textContent = text;
     readingText.classList.remove('idle');
-    document.getElementById('avatarOrb').classList.add('speaking');
+    $('avatarOrb').classList.add('speaking');
 
+    let done = false;
+    // Sicurezza: se una frase si blocca, dopo 20 secondi passa alla successiva
+    const watchdog = setTimeout(() => { try { speechSynthesis.cancel(); } catch(e){} if(currentAudio){ currentAudio.pause(); } finish(); }, 20000);
     const finish = () => {
+      if(done) return;
+      done = true;
+      clearTimeout(watchdog);
+      currentAudio = null;
       speaking = false;
-      document.getElementById('avatarOrb').classList.remove('speaking');
+      $('avatarOrb').classList.remove('speaking');
       if(speechQueue.length === 0){
-        readingText.textContent = 'In attesa di commenti...';
+        readingText.textContent = tr('idle', uiLang, {});
         readingText.classList.add('idle');
       }
       processSpeechQueue();
     };
 
+    if(!elevenOk){ speakWithBrowser(text, lang, finish); return; }
+
     try {
       const res = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
+        body: JSON.stringify({ text, lang, sid: SID })
       });
+      if(res.status === 503 || res.status === 403){ elevenOk = false; showVoiceStatus(); }
       if(!res.ok) throw new Error('tts non disponibile');
 
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
+      currentAudio = audio;
       audio.onended = () => { URL.revokeObjectURL(url); finish(); };
-      audio.onerror = () => { URL.revokeObjectURL(url); speakWithBrowser(text, finish); };
-      audio.play();
+      audio.onerror = () => { URL.revokeObjectURL(url); speakWithBrowser(text, lang, finish); };
+      audio.play().catch(() => { URL.revokeObjectURL(url); speakWithBrowser(text, lang, finish); });
     } catch(e){
-      // Voce di riserva (browser) se ElevenLabs non risponde
-      speakWithBrowser(text, finish);
+      speakWithBrowser(text, lang, finish);
     }
   }
 
+  // Ferma subito la voce e svuota la coda (usato quando ci si scollega)
+  function stopSpeech(){
+    speechQueue = [];
+    try { speechSynthesis.cancel(); } catch(e){}
+    if(currentAudio){ try { currentAudio.pause(); currentAudio.onended && currentAudio.onended(); } catch(e){} }
+  }
+
+  let elevenConfigured = false;
+  function showVoiceStatus(){
+    const el = $('voiceStatus');
+    const real = elevenConfigured && (premium || plan !== 'free');
+    el.className = 'voice-status ' + (real ? 'ok' : 'warn');
+    el.textContent = real ? '● Voce realistica attiva'
+      : !elevenConfigured ? '● Voce standard (voce realistica non configurata sul server)'
+      : '● Voce standard del browser · voce realistica con il piano Pro';
+  }
+  fetch('/api/tts-status').then(r => r.json()).then(d => { elevenConfigured = !!d.elevenlabs; elevenOk = elevenConfigured; renderPlan(); }).catch(() => {});
+
   connectWebSocket();
+
 </script>
 </body>
 </html>

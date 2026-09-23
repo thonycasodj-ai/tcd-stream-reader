@@ -8,18 +8,18 @@
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bebas+Neue&display=swap');
 
   :root{
-    --navy-deep: #08050f;
-    --purple: #b026ff;
-    --cyan: #00f0ff;
-    --mint: #7cffcb;
-    --coral: #ff2d78;
+    --navy-deep: #060d1a;
+    --purple: #4f7cff;
+    --cyan: #8fdcff;
+    --mint: #e6f6ff;
+    --coral: #ff4f6d;
   }
   *{ box-sizing:border-box; margin:0; padding:0; }
   html{ scroll-behavior: smooth; }
   body{
     background:
-      linear-gradient(180deg, rgba(8,5,15,0.85), rgba(8,5,15,0.94)),
-      url('/assets/page-bg.jpg') center/cover fixed;
+      linear-gradient(180deg, rgba(6,13,26,0.85), rgba(6,13,26,0.94)),
+      radial-gradient(ellipse at 50% 120%, #1b3a66 0%, transparent 60%), linear-gradient(180deg, #0a1a33 0%, #060d1a 70%) fixed;
     font-family: 'Space Grotesk', sans-serif;
     color: #fff;
     min-height: 100vh;
@@ -27,9 +27,9 @@
   .bg-glow{
     position: fixed; inset: 0;
     background:
-      radial-gradient(circle at 15% 0%, rgba(176,38,255,0.3), transparent 45%),
-      radial-gradient(circle at 90% 20%, rgba(0,240,255,0.2), transparent 40%),
-      radial-gradient(circle at 50% 100%, rgba(255,45,120,0.18), transparent 50%);
+      radial-gradient(circle at 15% 0%, rgba(79,124,255,0.3), transparent 45%),
+      radial-gradient(circle at 90% 20%, rgba(143,220,255,0.2), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(160,190,255,0.18), transparent 50%);
     pointer-events: none; z-index: 0;
   }
   .wrap{ max-width: 720px; margin: 0 auto; padding: 60px 20px 40px; position: relative; z-index: 1; }
@@ -76,13 +76,13 @@
     border: none; border-radius: 12px; padding: 12px 22px;
     font-family: inherit; font-weight: 700; font-size: 13px; letter-spacing: 0.5px;
     text-transform: uppercase; cursor: pointer;
-    background: linear-gradient(135deg, var(--cyan), var(--mint)); color: #08050f;
+    background: linear-gradient(135deg, var(--cyan), var(--mint)); color: #060d1a;
     transition: transform 0.12s ease;
   }
   form.waitlist button:active{ transform: scale(0.96); }
   .form-note{ font-size: 11.5px; color: rgba(255,255,255,0.4); margin-top: 10px; }
   .success-msg{
-    display: none; background: rgba(124,255,203,0.12); border: 1px solid rgba(124,255,203,0.4);
+    display: none; background: rgba(200,235,255,0.12); border: 1px solid rgba(200,235,255,0.4);
     color: var(--mint); padding: 14px 18px; border-radius: 14px; font-size: 14px; max-width: 480px;
   }
 
@@ -110,11 +110,11 @@
   }
   .price-card.featured{
     border-color: var(--cyan);
-    background: linear-gradient(165deg, rgba(0,240,255,0.1), rgba(255,255,255,0.03));
+    background: linear-gradient(165deg, rgba(143,220,255,0.1), rgba(255,255,255,0.03));
   }
   .price-card .tag{
     position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
-    background: var(--cyan); color: #08050f; font-size: 10px; font-weight: 700;
+    background: var(--cyan); color: #060d1a; font-size: 10px; font-weight: 700;
     padding: 3px 12px; border-radius: 10px; letter-spacing: 0.5px; text-transform: uppercase;
   }
   .price-card h4{ font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
@@ -134,6 +134,25 @@
 </style>
 </head>
 <body>
+<canvas id="snow" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:-1"></canvas>
+<script>
+// Neve leggera di sottofondo (si disattiva se il dispositivo chiede meno animazioni)
+(function(){
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=document.getElementById('snow'), x=c.getContext('2d'); let W,H,f=[];
+  function size(){ W=c.width=innerWidth; H=c.height=innerHeight; }
+  size(); addEventListener('resize', size);
+  for(let i=0;i<70;i++) f.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+0.6,s:Math.random()*0.5+0.25,d:Math.random()*Math.PI*2});
+  (function loop(){
+    x.clearRect(0,0,W,H); x.fillStyle='rgba(230,246,255,0.55)';
+    f.forEach(p=>{ p.y+=p.s; p.d+=0.01; p.x+=Math.sin(p.d)*0.3;
+      if(p.y>H){ p.y=-5; p.x=Math.random()*W; }
+      x.beginPath(); x.arc(p.x,p.y,p.r,0,Math.PI*2); x.fill(); });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+
 <div class="bg-glow"></div>
 
 <div class="wrap">
@@ -185,14 +204,15 @@
 
   <section>
     <div class="section-label">Prezzi di lancio</div>
-    <div class="pricing">
+    <div class="pricing" id="prezzi">
       <div class="price-card">
         <h4>Free</h4>
         <div class="amount">0€<span>/mese</span></div>
         <ul>
-          <li>Voce standard</li>
-          <li>1 live alla volta</li>
-          <li>Overlay OBS incluso</li>
+          <li>Prime 2 dirette complete gratis</li>
+          <li>Poi voce standard</li>
+          <li>Bot base: ciao, orario, regole</li>
+          <li>Multilingua automatico</li>
         </ul>
       </div>
       <div class="price-card featured">
@@ -200,9 +220,9 @@
         <h4>Pro</h4>
         <div class="amount">9€<span>/mese</span></div>
         <ul>
-          <li>Voce naturale premium</li>
-          <li>Multilingua avanzato</li>
-          <li>Regali e ingressi inclusi</li>
+          <li>Voce realistica premium</li>
+          <li>Bot completo: brano in onda, richieste, skip, social</li>
+          <li>Regali e ingressi letti in voce</li>
         </ul>
       </div>
       <div class="price-card">
@@ -210,7 +230,8 @@
         <div class="amount">19€<span>/mese</span></div>
         <ul>
           <li>Tutto di Pro</li>
-          <li>Personaggio/branding custom</li>
+          <li>Bot personalizzato: nome, social, presentazione</li>
+          <li>Comandi tuoi (es. bot merch)</li>
           <li>Supporto prioritario</li>
         </ul>
       </div>
